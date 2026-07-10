@@ -1,0 +1,10 @@
+# dependencies
+node_modules/
+
+# build output (Vercel builds this itself)
+dist/
+
+# local tooling
+.claude/
+.DS_Store
+*.log
