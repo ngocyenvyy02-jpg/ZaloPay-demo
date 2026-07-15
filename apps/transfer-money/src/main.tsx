@@ -48,9 +48,9 @@ function App() {
 
   return (
     <div className={styles.stack}>
-      {/* Screen area — render your screen(s) here (default when no ?screen= param). */}
+      {/* Screen area — the 3-option reward demo is the production default. */}
       <div className={styles.screen}>
-        {screenId ? SCREENS[screenId] : <BankTransfer />}
+        {screenId ? SCREENS[screenId] : <TransferMoney />}
       </div>
 
       {/* OS-style status bar: fixed on top while screens transition beneath. */}
