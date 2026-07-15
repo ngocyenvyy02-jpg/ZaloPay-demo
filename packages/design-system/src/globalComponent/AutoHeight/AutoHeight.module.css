@@ -1,0 +1,31 @@
+/* AutoHeight (ported from @zpi/z-taste MotionElement, framer-motion removed).
+   Root pins to the measured content height; when .animated, height moves with
+   a 300ms ease-in-out transition (z-taste `height 0.3s ease-in-out` —
+   `ease-in-out` kept verbatim, no DS ease token matches it) and a swapped
+   view fades in 200ms (z-taste framer tween 0.2 easeInOut). */
+
+.root {
+  position: relative;
+  overflow: hidden;
+  transform-origin: top center;
+}
+
+.animated {
+  transition: height var(--motion-duration-normal, 300ms) ease-in-out;
+  will-change: height;
+}
+
+.view {
+  position: relative;
+  width: 100%;
+  animation: auto-height-fade-in var(--motion-duration-fast, 200ms) ease-in-out;
+}
+
+@keyframes auto-height-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,394 @@
+/* Root fills the app shell (.stack sizes via --app-w/--app-h) — a screen NEVER
+   hardcodes the Figma canvas size (375/393/812/852). See build.md "Responsive". */
+.root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary-white, #fff);
+}
+
+.navigation {
+  flex: 0 0 auto;
+  min-height: calc(var(--safe-top, 0px) + var(--statusbar-h, 0px) + 60px);
+  --navigation-bar-bg: var(--color-primary-white, #fff);
+}
+
+/* Scan + coin — left-side nav actions, aligned with the App-level ••• ✕ chip. */
+.navActions {
+  position: absolute;
+  top: calc(var(--safe-top, 0px) + var(--statusbar-h, 0px) + 12px);
+  left: var(--space-xl, 16px);
+  z-index: 21;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl, 16px);
+}
+
+.navIconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.navIconButton:active {
+  transform: scale(0.99);
+}
+
+.scanIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.navCoin {
+  width: 32px;
+  height: 32px;
+}
+
+/* layout_new: amount (grows) + receiver hub + keypad (bottom). */
+.layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Số tiền + ghi chú ---- */
+.amountSection {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* Figma exact; no spacing token. */
+  padding: 0 var(--space-xl, 16px);
+}
+
+.amount {
+  width: 100%;
+}
+
+.noteField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px; /* Figma exact; no spacing token. */
+}
+
+.noteInput {
+  width: 220px;
+  max-width: 100%;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-primary-dark, #001f3e);
+  font: inherit;
+  font-size: 18px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 28px; /* Figma exact; no line-height token. */
+  text-align: center;
+}
+
+.noteInput::placeholder {
+  color: var(--color-variant-dark-200, #99a5b2);
+}
+
+.noteDivider {
+  width: 220px;
+  max-width: 100%;
+  height: 1px;
+  background: var(--color-variant-dark-50, #e6e9ec);
+}
+
+/* Figma "space": 48px white gap that nudges the amount block up from center. */
+.amountSpace {
+  flex: 0 0 auto;
+  height: 48px; /* Figma exact; no spacing token. */
+}
+
+/* ---- Receiver hub (Chuyển tiền) ---- */
+.receiver {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Figma exact; no spacing token. */
+  padding: 0 var(--space-lg, 12px) var(--space-lg, 12px);
+}
+
+.receiverTitle {
+  display: flex;
+  align-items: flex-end;
+  min-height: 28px;
+  padding: 0 var(--space-lg, 12px);
+}
+
+.receiverTitle h1 {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-variant-dark-200, #99a5b2);
+  font-size: 18px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 28px; /* Figma exact; no line-height token. */
+}
+
+.optionsRow {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.optionItem {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-s, 4px);
+  padding: var(--space-s, 4px);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.optionItem:active {
+  transform: scale(0.99);
+}
+
+.serviceIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-primary-blue, #0033c9);
+}
+
+.serviceIcon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Service glyphs are fill-based line icons — tint only real (non-none) fills. */
+.serviceIcon [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+.optionLabel {
+  width: 100%;
+  color: var(--color-variant-dark-400, #334c65);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  text-align: center;
+}
+
+.optionLabelTruncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Recipient avatar / bank symbol (36px inside a 40px slot). */
+.avatarBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.avatarLogo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.avatarInitials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle, 10000px);
+  background: var(--color-variant-blue-25, #e7f6ff);
+  color: var(--color-primary-blue, #0033c9);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-bold, 700);
+  line-height: var(--line-height-lg, 18px);
+}
+
+.moreCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-variant-dark-50, #e6e9ec);
+  border-radius: var(--radius-circle, 10000px);
+  color: var(--color-variant-dark-200, #99a5b2);
+}
+
+.moreChevron {
+  width: 24px;
+  height: 24px;
+}
+
+/* arrow_down1 is a mixed fill+stroke glyph — tint both non-none paints. */
+.moreChevron [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+.moreChevron [stroke]:not([stroke="none"]) {
+  stroke: currentColor;
+}
+
+/* ---- Keypad ---- */
+/* Figma "cal" fill rgba(245,249,255,0.65): the 0.65-alpha variant of
+   --color-other-background (#f5f9ff) has no exact token — kept verbatim, flagged. */
+.keypad {
+  flex: 0 0 auto;
+  padding-top: var(--space-xl, 16px);
+  padding-bottom: calc(24px + var(--safe-bottom, 0px)); /* 24px Figma exact; no token. */
+  background: rgba(245, 249, 255, 0.65);
+}
+
+/* Short viewports: keep the keypad fully visible by trimming the space nudge. */
+@media (max-height: 720px) {
+  .amountSpace {
+    height: var(--space-xl, 16px);
+  }
+}
+
+/* ---- Edge case: full-screen bảo trì ---- */
+.maintenance {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px; /* Figma exact; no token. */
+}
+
+/* ---- Edge case: confirm-recipient tray sheet (content inside DS Sheet) ---- */
+.confirmSheet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl, 16px);
+  padding: 24px; /* Figma tray p-24; no token. */
+}
+
+.confirmHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 8px);
+}
+
+.confirmBadgeRow {
+  display: flex;
+  align-items: flex-start;
+}
+
+.confirmBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-variant-dark-100, #ccd2d8);
+}
+
+.confirmBadge svg {
+  width: 40px;
+  height: 40px;
+}
+
+.confirmBadge svg [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+.confirmTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md, 8px);
+  padding-bottom: var(--space-xl, 16px);
+  border-bottom: 1px solid var(--color-other-stroke2, #eef4fe);
+}
+
+.confirmTitle {
+  color: var(--color-primary-dark, #001f3e);
+  font-size: 18px;
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 28px; /* Figma exact; no line-height token. */
+}
+
+.confirmCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg, 12px);
+  padding: var(--space-lg, 12px);
+  border: 1.5px solid var(--color-other-stroke2, #eef4fe);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--color-primary-white, #fff);
+}
+
+.confirmCardLogo {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmCardLogo img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.confirmCardCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Figma exact; no spacing token. */
+}
+
+.confirmCardName {
+  color: var(--color-primary-dark, #001f3e);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 20px; /* Figma exact; no line-height token. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.confirmCardAccount {
+  color: var(--color-variant-dark-300, #66798b);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+}
+
+.confirmButtons {
+  display: flex;
+  gap: var(--space-md, 8px);
+  width: 100%;
+}
+
+/* Figma secondary here = blue-25 fill, no border, rect radius. DS Button has no
+   such variant (2.0 secondary = white+border; 3.0 secondary = blue-25 but pill),
+   so override the fill via className. Descendant selector beats DS `.secondary`.
+   FLAG: DS gap — filled secondary at rect radius. */
+.confirmButtons .secondaryFilled {
+  background: var(--color-variant-blue-25, #e7f6ff);
+  border: none;
+}

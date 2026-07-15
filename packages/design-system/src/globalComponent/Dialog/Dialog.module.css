@@ -1,0 +1,86 @@
+/* Full-frame layer above all app chrome (status bar/control are ~1000). */
+.root {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px; /* 32px side inset (Figma popup margin); no spacing token. */
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-other-overlay);
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+/* Card shell. Shadow = "V2 Shadow level3" (0 2 6 #001F3E26); no DS shadow token
+   yet — kept exact and flagged. */
+.card {
+  position: relative;
+  box-sizing: border-box;
+  width: 311px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary-white, #fff);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 2px 6px rgba(0, 31, 62, 0.15);
+  padding: var(--space-2xl, 20px) var(--space-xl, 16px) 24px; /* 24px bottom: Figma exact, no token. */
+  transition:
+    opacity var(--motion-duration-normal) var(--motion-ease-out),
+    transform var(--motion-duration-normal) var(--motion-ease-out);
+  will-change: opacity, transform;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-dark, #001f3e);
+  cursor: pointer;
+}
+
+.close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.close svg [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+.close:active {
+  transform: scale(0.99);
+}
+
+/* ---- Enter (visible) ---- */
+.enter .overlay {
+  opacity: 1;
+}
+.enter .card {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---- Exit / pre-enter (hidden): fade + slight scale-down ---- */
+.exit .overlay,
+.pre-enter .overlay {
+  opacity: 0;
+}
+.exit .card,
+.pre-enter .card {
+  opacity: 0;
+  transform: scale(0.96);
+}

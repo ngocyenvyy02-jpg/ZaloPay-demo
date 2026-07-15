@@ -1,0 +1,144 @@
+/* Design-system tokens — mirror of design-tokens.json, emitted as CSS custom
+   properties. Consumed by every app via `@import "@zlp/design-system/tokens.css"`.
+   This file is the DS half of the old src/index.css; the reset/frame/app-shell
+   half lives in each app's own index.css (see the app template). */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* App frame size. Mobile: fill the device viewport (fluid).
+     Desktop (see media query below): a fixed 375x812 phone frame. */
+  --app-w: 100%;
+  --app-h: 100vh;
+  --app-h: 100dvh;
+  --app-radius: 0px;
+  /* Status bar: hidden on mobile (OS draws its own), 54px in the desktop
+     framed preview. Lives at the App level so it stays put while screens
+     transition underneath it. */
+  --statusbar-h: 0px;
+  /* Room the nav reserves on the right for the fixed App-level control chip
+     (••• | ✕). Matches the Figma nav layout. */
+  --nav-control-inset: 104px;
+  /* NavigationBar total height (pt 20 + content 24 + pb 16 = 60). Used by
+     Sheet (tray/bottom-sheet) to cap its height so it stops 16px below the
+     nav. Keep in sync with the NavigationBar's vertical padding + content. */
+  --nav-h: 60px;
+
+  /* Spacing / typography / radius tokens (mirror design-tokens.json). Only the
+     steps actually used in components are emitted here — add more from the JSON
+     as needed. Reference these instead of hardcoding px so values stay tied to
+     the Figma source. */
+  --space-s: 4px; /* size-spacing-s */
+  --space-md: 8px; /* size-spacing-md */
+  --space-lg: 12px; /* size-spacing-lg */
+  --space-xl: 16px; /* size-spacing-xl */
+  --space-2xl: 20px; /* size-spacing-2xl */
+  --font-size-md: 14px; /* font.size.md */
+  --font-weight-regular: 400; /* font.weight.regular */
+  --font-weight-bold: 700; /* font.weight.bold */
+  --line-height-lg: 18px; /* font.lineHeight.lg */
+  --radius-s: 4px; /* size-radius-s */
+  --radius-md: 8px; /* size-radius-md */
+  --radius-lg: 12px; /* size-radius-lg */
+  --radius-xl: 16px; /* size-radius-xl */
+  --radius-circle: 10000px; /* size-radius-circle (pill) */
+
+  /* Motion tokens (mirror design-tokens.json > motion), aligned to
+     @zpi/z-taste. Pure CSS/tween cubic-bezier, no JS spring. Every
+     transition/animation references these — never hardcode ms/cubic-bezier. */
+  --motion-duration-instant: 100ms; /* key press, cursor move, micro feedback */
+  --motion-duration-fast: 200ms; /* opacity/fade, tags, small transitions */
+  --motion-duration-normal: 300ms; /* keyboard/content/overlay, most transitions */
+  --motion-duration-slow: 400ms; /* drawer / screen push */
+
+  --motion-ease-out: cubic-bezier(0.04, 0.62, 0.23, 0.98); /* DEFAULT: content, opacity, press, most UI (z-taste primary) */
+  --motion-ease-enter: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* appearing with y/scale (z-taste keyboard enter) */
+  --motion-ease-exit: cubic-bezier(0.55, 0.085, 0.68, 0.53); /* leaving (z-taste keyboard exit) */
+  --motion-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); /* sheet/drawer slide-up, present, image viewer (z-taste drawer) */
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* number/value change, reposition (z-taste number display) */
+
+  /* Color tokens (mirror design-tokens.json > color). Reference these
+     instead of raw hex so colors stay consistent with the Figma source. */
+  --color-primary-blue: #0033c9;
+  --color-primary-green: #00cf6a;
+  --color-primary-dark: #001f3e;
+  --color-primary-white: #ffffff;
+  --color-secondary-red: #e3173c;
+  --color-secondary-orange: #ff8d00;
+  --color-secondary-teal: #00b7ff;
+  --color-secondary-indigo: #6f0ce2;
+  --color-other-background: #f5f9ff;
+  --color-other-stroke1: #f2f6f7;
+  --color-other-stroke2: #eef4fe;
+  --color-other-overlay: rgba(0, 31, 62, 0.8);
+  --color-other-skeleton: linear-gradient(92deg, #f0f6ff 0.64%, #e8f0fd 64.81%, #eef4fe 100%);
+  --color-variant-dark-25: #f2f4f5;
+  --color-variant-dark-50: #e6e9ec;
+  --color-variant-dark-100: #ccd2d8;
+  --color-variant-dark-200: #99a5b2;
+  --color-variant-dark-300: #66798b;
+  --color-variant-dark-400: #334c65;
+  --color-variant-dark-600: #001932;
+  --color-variant-dark-700: #001325;
+  --color-variant-dark-800: #000c19;
+  --color-variant-dark-900: #00060c;
+  --color-variant-red-25: #fef3f5;
+  --color-variant-red-50: #fce8ec;
+  --color-variant-red-100: #f9d1d8;
+  --color-variant-red-200: #f4a2b1;
+  --color-variant-red-300: #ee748a;
+  --color-variant-red-400: #e94563;
+  --color-variant-red-600: #b61230;
+  --color-variant-red-700: #880e24;
+  --color-variant-red-800: #5b0918;
+  --color-variant-red-900: #2d050c;
+  --color-variant-orange-25: #fffbec;
+  --color-variant-orange-50: #fff6d3;
+  --color-variant-orange-100: #ffeaa5;
+  --color-variant-orange-200: #ffd96d;
+  --color-variant-orange-300: #ffbc32;
+  --color-variant-orange-400: #ffa50a;
+  --color-variant-orange-600: #cc7100;
+  --color-variant-orange-700: #995500;
+  --color-variant-orange-800: #663800;
+  --color-variant-orange-900: #331c00;
+  --color-variant-green-25: #f2fff8;
+  --color-variant-green-50: #eefff5;
+  --color-variant-green-100: #d7ffeb;
+  --color-variant-green-200: #b2ffd8;
+  --color-variant-green-300: #76ffbb;
+  --color-variant-green-400: #33f596;
+  --color-variant-green-600: #00a655;
+  --color-variant-green-700: #007c40;
+  --color-variant-green-800: #00532a;
+  --color-variant-green-900: #002915;
+  --color-variant-blue-25: #e7f6ff;
+  --color-variant-blue-50: #d3eeff;
+  --color-variant-blue-100: #b0ddff;
+  --color-variant-blue-200: #81c4ff;
+  --color-variant-blue-300: #4f9bff;
+  --color-variant-blue-400: #2871ff;
+  --color-variant-blue-600: #0029a1;
+  --color-variant-blue-700: #001f79;
+  --color-variant-blue-800: #001450;
+  --color-variant-blue-900: #000f3c;
+  --color-variant-teal-25: #f2faff;
+  --color-variant-teal-50: #eff9ff;
+  --color-variant-teal-100: #def3ff;
+  --color-variant-teal-200: #b6e9ff;
+  --color-variant-teal-300: #75daff;
+  --color-variant-teal-400: #2cc8ff;
+  --color-variant-teal-600: #008ed4;
+  --color-variant-teal-700: #0071ab;
+  --color-variant-teal-800: #005f8d;
+  --color-variant-teal-900: #064f74;
+  --color-variant-indigo-25: #f5f1ff;
+  --color-variant-indigo-50: #ede6ff;
+  --color-variant-indigo-100: #dcd0ff;
+  --color-variant-indigo-200: #c4abff;
+  --color-variant-indigo-300: #a97bff;
+  --color-variant-indigo-400: #8f46ff;
+  --color-variant-indigo-600: #590ab5;
+  --color-variant-indigo-700: #430788;
+  --color-variant-indigo-800: #2c055a;
+  --color-variant-indigo-900: #16022d;
+}

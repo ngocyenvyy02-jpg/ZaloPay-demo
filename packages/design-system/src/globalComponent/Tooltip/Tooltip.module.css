@@ -1,0 +1,166 @@
+/* Tooltip (Design System 3.0). Blue bubble + 12×8 arrow, anchored around the
+   wrapped target via CSS absolute positioning. Bubble: bg primary-blue, radius
+   8, padding 8×12, gap 8, max-width 300, text 14/18 white. Arrow is a pure-CSS
+   triangle (12 base × 8 height) in the bubble color, pointing at the target. */
+
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+/* The floating tip: a flex line holding [arrow] + [bubble], ordered so the
+   arrow sits between the target and the bubble. Positioned per side/align. */
+.tip {
+  position: absolute;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  pointer-events: none; /* tooltip is presentational; don't block the target */
+}
+
+/* ---- Bubble ---- */
+.bubble {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: max-content; /* hug the content */
+  max-width: 300px; /* wrap once it would exceed 300 */
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-primary-blue, #0033c9);
+}
+.icon {
+  display: flex;
+  align-items: center;
+  padding: 1px 0;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary-white, #fff);
+}
+.text {
+  flex: 1 0 0;
+  min-width: 0;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-primary-white, #fff);
+}
+
+/* ---- Arrow: CSS triangle, 12 base × 8 height, bubble color ---- */
+.arrow {
+  width: 0;
+  height: 0;
+  flex-shrink: 0;
+}
+
+/* ============ Side: which edge of the target, + arrow direction ============ */
+/* TOP: tip above target; stack [bubble] then [arrow] pointing down. */
+.side_top {
+  bottom: 100%;
+  margin-bottom: 8px; /* gap from target */
+  flex-direction: column;
+}
+.side_top .arrow {
+  order: 1; /* arrow AFTER the bubble → sits at the bubble's bottom edge */
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--color-primary-blue, #0033c9);
+  margin-top: -1px; /* seat flush to the bubble, no seam */
+}
+
+/* BOTTOM: tip below target; [arrow] pointing up, then [bubble]. */
+.side_bottom {
+  top: 100%;
+  margin-top: 8px;
+  flex-direction: column;
+}
+.side_bottom .arrow {
+  order: -1;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 8px solid var(--color-primary-blue, #0033c9);
+  margin-bottom: -1px;
+}
+
+/* LEFT: tip to the left; [bubble] then [arrow] pointing right. */
+.side_left {
+  right: 100%;
+  margin-right: 8px;
+  flex-direction: row;
+}
+.side_left .arrow {
+  order: 1; /* arrow AFTER the bubble → sits at the bubble's right edge */
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid var(--color-primary-blue, #0033c9);
+  margin-left: -1px;
+}
+
+/* RIGHT: tip to the right; [arrow] pointing left, then [bubble]. */
+.side_right {
+  left: 100%;
+  margin-left: 8px;
+  flex-direction: row;
+}
+.side_right .arrow {
+  order: -1;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid var(--color-primary-blue, #0033c9);
+  margin-right: -1px;
+}
+
+/* ============ Align: position along the chosen side ============ */
+/* For top/bottom, align controls horizontal cross-position + arrow inset. */
+.side_top.align_center,
+.side_bottom.align_center {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+.side_top.align_start,
+.side_bottom.align_start {
+  left: 0;
+  align-items: flex-start;
+}
+.side_top.align_end,
+.side_bottom.align_end {
+  right: 0;
+  align-items: flex-end;
+}
+/* Arrow inset from the edge (12px) for start/end so it sits over the target. */
+.side_top.align_start .arrow,
+.side_bottom.align_start .arrow {
+  margin-left: 12px;
+}
+.side_top.align_end .arrow,
+.side_bottom.align_end .arrow {
+  margin-right: 12px;
+}
+
+/* For left/right, align controls vertical cross-position. */
+.side_left.align_center,
+.side_right.align_center {
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: center;
+}
+.side_left.align_start,
+.side_right.align_start {
+  top: 0;
+  align-items: flex-start;
+}
+.side_left.align_end,
+.side_right.align_end {
+  bottom: 0;
+  align-items: flex-end;
+}
+.side_left.align_start .arrow,
+.side_right.align_start .arrow {
+  margin-top: 12px;
+}
+.side_left.align_end .arrow,
+.side_right.align_end .arrow {
+  margin-bottom: 12px;
+}

@@ -1,0 +1,297 @@
+{
+  "$meta": {
+    "source": "Figma — Design System 3.0 / Variables V2 (mode: Value)",
+    "note": "Primitive design tokens for Figma->code mapping. Color keys mirror the Figma variable path (Group/Subgroup/V2 Name -> group-subgroup-step). Color = hex (alpha noted when <100%). spacing/radius are unitless (apply pt/dp/px at implementation)."
+  },
+  "font": {
+    "family": "SF Pro Display",
+    "weight": {
+      "regular": 400,
+      "bold": 700
+    },
+    "size": {
+      "xs": 10,
+      "s": 12,
+      "md": 14,
+      "lg": 16,
+      "xl": 18,
+      "2xl": 24
+    },
+    "lineHeight": {
+      "xs": 12,
+      "md": 16,
+      "lg": 18,
+      "xl": 20,
+      "2xl": 22,
+      "3xl": 24,
+      "4xl": 28,
+      "5xl": 36
+    }
+  },
+  "textStyle": {
+    "Heading - Bold/S24 - Large": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 24,
+      "lineHeight": 36
+    },
+    "Heading - Bold/S18 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 18,
+      "lineHeight": 28
+    },
+    "Heading - Bold/S16 - Small": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 16,
+      "lineHeight": 24
+    },
+    "Heading - Regular/S24 - Large": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 24,
+      "lineHeight": 36
+    },
+    "Heading - Regular/S18 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 18,
+      "lineHeight": 28
+    },
+    "Heading - Regular/S16 - Small": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 16,
+      "lineHeight": 24
+    },
+    "Label - Bold/S16 - Large": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 16,
+      "lineHeight": 20
+    },
+    "Label - Bold/S14 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 14,
+      "lineHeight": 18
+    },
+    "Label - Bold/S12 - Small": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 12,
+      "lineHeight": 16
+    },
+    "Label - Bold/S10 - XSmall": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 10,
+      "lineHeight": 12
+    },
+    "Label - Regular/S16 - Large": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 16,
+      "lineHeight": 20
+    },
+    "Label - Regular/S14 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 14,
+      "lineHeight": 18
+    },
+    "Label - Regular/S12 - Small": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 12,
+      "lineHeight": 16
+    },
+    "Label - Regular/S10 - XSmall": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 10,
+      "lineHeight": 12
+    },
+    "Paragraph - Bold/S16 - Large": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 16,
+      "lineHeight": 24
+    },
+    "Paragraph - Bold/S14 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Bold",
+      "size": 14,
+      "lineHeight": 22
+    },
+    "Paragraph - Regular/S16 - Large": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 16,
+      "lineHeight": 24
+    },
+    "Paragraph - Regular/S14 - Medium": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 14,
+      "lineHeight": 22
+    },
+    "Paragraph - Regular/S12 - Regular": {
+      "font": "SF Pro Display",
+      "style": "Regular",
+      "size": 12,
+      "lineHeight": 20
+    }
+  },
+  "spacing": {
+    "size-spacing-none": 0,
+    "size-spacing-xs": 2,
+    "size-spacing-s": 4,
+    "size-spacing-md": 8,
+    "size-spacing-lg": 12,
+    "size-spacing-xl": 16,
+    "size-spacing-2xl": 20,
+    "size-spacing-3xl": 24,
+    "size-spacing-4xl": 32,
+    "size-spacing-5xl": 40,
+    "size-spacing-6xl": 48,
+    "size-spacing-7xl": 64,
+    "size-spacing-8xl": 80,
+    "size-spacing-9xl": 96,
+    "size-spacing-10xl": 128,
+    "size-spacing-11xl": 160
+  },
+  "radius": {
+    "size-radius-none": 0,
+    "size-radius-s": 4,
+    "size-radius-md": 8,
+    "size-radius-lg": 12,
+    "size-radius-xl": 16,
+    "size-radius-2xl": 20,
+    "size-radius-3xl": 24,
+    "size-radius-4xl": 32,
+    "size-radius-circle": 10000
+  },
+  "motion": {
+    "$philosophy": [
+      "Aligned to @zpi/z-taste (Zalopay production lib): pure CSS/tween cubic-bezier, NO JS spring — z-taste uses no spring configs at all.",
+      "1. Curves come straight from z-taste. `out` (0.04,0.62,0.23,0.98) is the primary UI curve there — used for most content/opacity/keyboard motion.",
+      "2. Keep UI motion short — mostly <=300ms; only the large drawer/screen push reaches 400ms. Faster reads as more responsive.",
+      "3. `drawer` (0.32,0.72,0,1) matches z-taste's DrawerBottomSheet exactly; `standard` (0.4,0,0.2,1) matches its number-display motion.",
+      "4. enter/exit curves are z-taste's keyboard-section variants — asymmetric (different in vs out).",
+      "5. Only animate transform and opacity (perf). Tokens carry duration + easing only."
+    ],
+    "duration": {
+      "instant": "100ms",
+      "fast": "200ms",
+      "normal": "300ms",
+      "slow": "400ms"
+    },
+    "durationUse": {
+      "instant": "key press, cursor move, micro tactile feedback",
+      "fast": "opacity/fade, tags, small transitions (z-taste base 0.2s)",
+      "normal": "keyboard/content/overlay, most transitions (z-taste 0.3s)",
+      "slow": "drawer / screen push (z-taste drawer 0.4s)"
+    },
+    "easing": {
+      "out": "cubic-bezier(0.04, 0.62, 0.23, 0.98)",
+      "enter": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+      "exit": "cubic-bezier(0.55, 0.085, 0.68, 0.53)",
+      "drawer": "cubic-bezier(0.32, 0.72, 0, 1)",
+      "standard": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "easingUse": {
+      "out": "DEFAULT: content, opacity, press, most UI (z-taste primary curve)",
+      "enter": "elements appearing with y/scale (z-taste keyboard-section enter)",
+      "exit": "elements leaving (z-taste keyboard-section exit)",
+      "drawer": "sheet/drawer slide-up, present, image viewer (z-taste drawer)",
+      "standard": "number/value change, on-screen reposition (z-taste number display)"
+    }
+  },
+  "color": {
+    "primary-blue": "#0033C9",
+    "primary-green": "#00CF6A",
+    "primary-dark": "#001F3E",
+    "primary-white": "#FFFFFF",
+    "secondary-red": "#E3173C",
+    "secondary-orange": "#FF8D00",
+    "secondary-teal": "#00B7FF",
+    "secondary-indigo": "#6F0CE2",
+    "other-background": "#F5F9FF",
+    "other-stroke1": "#F2F6F7",
+    "other-stroke2": "#EEF4FE",
+    "other-overlay": "#001F3E (80%)",
+    "other-skeleton": "linear-gradient(92deg, #F0F6FF 0.64%, #E8F0FD 64.81%, #EEF4FE 100%)",
+    "variant-dark-25": "#F2F4F5",
+    "variant-dark-50": "#E6E9EC",
+    "variant-dark-100": "#CCD2D8",
+    "variant-dark-200": "#99A5B2",
+    "variant-dark-300": "#66798B",
+    "variant-dark-400": "#334C65",
+    "variant-dark-600": "#001932",
+    "variant-dark-700": "#001325",
+    "variant-dark-800": "#000C19",
+    "variant-dark-900": "#00060C",
+    "variant-red-25": "#FEF3F5",
+    "variant-red-50": "#FCE8EC",
+    "variant-red-100": "#F9D1D8",
+    "variant-red-200": "#F4A2B1",
+    "variant-red-300": "#EE748A",
+    "variant-red-400": "#E94563",
+    "variant-red-600": "#B61230",
+    "variant-red-700": "#880E24",
+    "variant-red-800": "#5B0918",
+    "variant-red-900": "#2D050C",
+    "variant-orange-25": "#FFFBEC",
+    "variant-orange-50": "#FFF6D3",
+    "variant-orange-100": "#FFEAA5",
+    "variant-orange-200": "#FFD96D",
+    "variant-orange-300": "#FFBC32",
+    "variant-orange-400": "#FFA50A",
+    "variant-orange-600": "#CC7100",
+    "variant-orange-700": "#995500",
+    "variant-orange-800": "#663800",
+    "variant-orange-900": "#331C00",
+    "variant-green-25": "#F2FFF8",
+    "variant-green-50": "#EEFFF5",
+    "variant-green-100": "#D7FFEB",
+    "variant-green-200": "#B2FFD8",
+    "variant-green-300": "#76FFBB",
+    "variant-green-400": "#33F596",
+    "variant-green-600": "#00A655",
+    "variant-green-700": "#007C40",
+    "variant-green-800": "#00532A",
+    "variant-green-900": "#002915",
+    "variant-blue-25": "#E7F6FF",
+    "variant-blue-50": "#D3EEFF",
+    "variant-blue-100": "#B0DDFF",
+    "variant-blue-200": "#81C4FF",
+    "variant-blue-300": "#4F9BFF",
+    "variant-blue-400": "#2871FF",
+    "variant-blue-600": "#0029A1",
+    "variant-blue-700": "#001F79",
+    "variant-blue-800": "#001450",
+    "variant-blue-900": "#000F3C",
+    "variant-teal-25": "#F2FAFF",
+    "variant-teal-50": "#EFF9FF",
+    "variant-teal-100": "#DEF3FF",
+    "variant-teal-200": "#B6E9FF",
+    "variant-teal-300": "#75DAFF",
+    "variant-teal-400": "#2CC8FF",
+    "variant-teal-600": "#008ED4",
+    "variant-teal-700": "#0071AB",
+    "variant-teal-800": "#005F8D",
+    "variant-teal-900": "#064F74",
+    "variant-indigo-25": "#F5F1FF",
+    "variant-indigo-50": "#EDE6FF",
+    "variant-indigo-100": "#DCD0FF",
+    "variant-indigo-200": "#C4ABFF",
+    "variant-indigo-300": "#A97BFF",
+    "variant-indigo-400": "#8F46FF",
+    "variant-indigo-600": "#590AB5",
+    "variant-indigo-700": "#430788",
+    "variant-indigo-800": "#2C055A",
+    "variant-indigo-900": "#16022D"
+  }
+}

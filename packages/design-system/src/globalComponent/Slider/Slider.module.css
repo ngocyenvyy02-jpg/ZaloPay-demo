@@ -1,0 +1,118 @@
+/* Slider (Figma "Slider container", nodes 51:648 / 51:688). Track 6px pill,
+   24px white knob w/ drop shadow, 4px step dots, 12/16 end labels. Fill + knob
+   position via `left`/`width` %, transitioned so a fast drag retargets rather
+   than restarts (interaction.md — interruptibility). */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  touch-action: none; /* let the pointer drag own vertical moves too */
+}
+
+/* Box is knob-tall (24px) so the 24px knob sits fully inside it — the flex
+   gap to the labels then measures from the knob edge, not the 6px line, and the
+   knob no longer overlaps the labels. The visible 6px track line, fill, and
+   dots are centered on the box via top:50%. */
+.track {
+  position: relative;
+  height: 24px;
+  cursor: pointer;
+  outline: none;
+}
+
+.track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 1000px;
+  background: var(--color-other-stroke2, #eef4fe);
+}
+
+.track:focus-visible::before {
+  box-shadow: 0 0 0 2px var(--color-primary-blue, #0033c9);
+}
+
+.fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  border-radius: 1000px;
+  background: var(--color-primary-blue, #0033c9);
+  transition: width var(--motion-duration-instant, 100ms) var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+.dots {
+  position: absolute;
+  left: 0;
+  top: calc(50% + 4px); /* dots row sits 1px below the 6px line, as in Figma */
+  right: 0;
+  height: 4px;
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px; /* center the dot on its position */
+  border-radius: 50%;
+  background: var(--color-variant-teal-100, #def3ff);
+}
+
+.knob {
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px; /* center on the value position */
+  border-radius: 50%;
+  background: var(--color-primary-white, #fff);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16), 0 0 1px rgba(0, 0, 0, 0.12);
+  transform: translateY(-50%);
+  transition: left var(--motion-duration-instant, 100ms) var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* During a drag the knob/fill must track the pointer with no lag — the
+   transition (for keyboard/tap-to-jump) would make them chase ~100ms behind. */
+.dragging .fill,
+.dragging .knob {
+  transition: none;
+}
+
+.track:active .knob {
+  transform: translateY(-50%) scale(0.97);
+}
+
+.labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.label {
+  font-family: "SF Pro Display", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--color-variant-dark-200, #99a5b2);
+}
+
+.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .knob {
+    transition: none;
+  }
+}

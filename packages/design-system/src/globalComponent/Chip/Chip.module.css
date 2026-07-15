@@ -1,0 +1,100 @@
+/* Filter chip (Design System 3.0, set 89779:34235 — size 24). Read from Figma:
+   pill radius 100, h24, px8, gap4, label Regular 14/18, icons 16px.
+     outlined enabled : white bg, 1px dark-25 border, text primary-dark
+     outlined selected: blue border + blue text
+     elevated enabled : other-background (#F5F9FF) bg, no border
+     elevated selected: blue-25 bg + blue text
+     disabled (both)  : dark-25 bg (+ matching border on outlined), text dark-100
+   Icons follow the state color via currentColor. Pressed: universal 0.99. */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px; /* token size-spacing-s */
+  border: none;
+  border-radius: 100px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  color: var(--color-primary-dark, #001f3e);
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-duration-fast, 200ms)
+      var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98)),
+    background var(--motion-duration-fast, 200ms)
+      var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98)),
+    border-color var(--motion-duration-fast, 200ms)
+      var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98)),
+    transform var(--motion-duration-instant, 100ms)
+      var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.root:not(:disabled):active {
+  transform: scale(0.99); /* universal pressed */
+}
+
+.label {
+  font-size: 14px; /* token font.size.md */
+  font-weight: 400; /* token font.weight.regular */
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+/* Generic 16px icon slot (leading & trailing) — icon tints via currentColor. */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: inherit;
+}
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Sizes (heights per Figma section 94547:263108; font/icons identical) ---- */
+.size24 {
+  height: 24px;
+  padding: 0 8px;
+}
+.size32 {
+  height: 32px;
+  padding: 0 12px;
+}
+.size36 {
+  height: 36px;
+  padding: 0 12px;
+}
+
+/* ---- Outlined ---- */
+.outlined {
+  background: var(--color-primary-white, #fff);
+  border: 1px solid var(--color-variant-dark-25, #f2f4f5);
+}
+.outlined.selected {
+  border-color: var(--color-primary-blue, #0033c9);
+  color: var(--color-primary-blue, #0033c9);
+}
+.outlined:disabled {
+  background: var(--color-variant-dark-25, #f2f4f5);
+  border-color: var(--color-variant-dark-25, #f2f4f5);
+  color: var(--color-variant-dark-100, #ccd2d8);
+  cursor: default;
+}
+
+/* ---- Elevated (tonal) ---- */
+.elevated {
+  background: var(--color-other-background, #f5f9ff);
+}
+.elevated.selected {
+  background: var(--color-variant-blue-25, #e7f6ff);
+  color: var(--color-primary-blue, #0033c9);
+}
+.elevated:disabled {
+  background: var(--color-variant-dark-25, #f2f4f5);
+  color: var(--color-variant-dark-100, #ccd2d8);
+  cursor: default;
+}

@@ -1,0 +1,62 @@
+/* Checkbox (Figma "checkbox", node 560:4897). Icon geometry is the real Figma
+   SVG (24px, checked.svg = filled box + white tick / unchecked.svg = outline
+   box) imported via svgr; the box uses currentColor so CSS `color` drives the
+   state color from design tokens:
+     checked + enabled   -> primary-blue    (#0033C9)
+     unchecked + enabled -> variant-dark-100 (#CCD2D8)
+     disabled (either)   -> variant-dark-200 (#99A5B2)
+   The tick stays white inside the SVG.
+   Base row/input/label come from ../shared/formControl.module.css. */
+
+.root {
+  composes: root from "../shared/formControl.module.css";
+}
+
+.input {
+  composes: input from "../shared/formControl.module.css";
+}
+
+.label {
+  composes: label from "../shared/formControl.module.css";
+}
+
+/* 24px icon container. `color` tints the SVG box via currentColor.
+   Default (unchecked + enabled) = variant-dark-100. */
+.box {
+  display: block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--color-variant-dark-100, #ccd2d8);
+  transition: color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.box svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Checked + enabled: blue box. */
+.input:checked + .box {
+  color: var(--color-primary-blue, #0033c9);
+}
+
+/* ---- Pressed feedback (template convention) ---- */
+.root:not(.disabled):active .box {
+  transform: scale(0.99);
+  transition: transform var(--motion-duration-instant, 100ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Disabled: dark-200 for both box states; label dims ---- */
+.disabled {
+  cursor: default;
+}
+.disabled .label {
+  opacity: 0.6;
+}
+.disabled .box,
+.disabled .input:checked + .box {
+  color: var(--color-variant-dark-200, #99a5b2);
+}

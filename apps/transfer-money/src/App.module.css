@@ -1,0 +1,33 @@
+/* App stack — the positioning context for animated screen layers.
+   Sized to the app frame (fluid on mobile, fixed phone frame on desktop)
+   so absolutely-positioned ScreenLayers fill it exactly. */
+.stack {
+  position: relative;
+  width: var(--app-w);
+  height: var(--app-h);
+  overflow: hidden;
+  border-radius: var(--app-radius);
+}
+/* Empty screen frame — the base layer new screens are built into. */
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary-white, #fff);
+}
+
+/* Status bar sits above every screen and stays fixed while screens
+   transition beneath it (like the real OS status bar). Transparent so the
+   screen's own background shows through; hidden on mobile via --statusbar-h. */
+.statusBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--statusbar-h);
+  overflow: hidden;
+  pointer-events: none;
+  /* background is set inline per route to match the top screen's nav;
+     transition it so the color change syncs with the screen transition. */
+  transition: background var(--motion-duration-normal) var(--motion-ease-out);
+}

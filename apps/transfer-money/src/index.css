@@ -1,0 +1,84 @@
+/* App-shell globals: design-system tokens + reset, scrollbar hiding, the
+   desktop phone-frame, and reduced-motion. Tokens come from the DS; the rest
+   is app-shell presentation (see @zlp/design-system split rationale). */
+@import "@zlp/design-system/tokens.css";
+
+* {
+  box-sizing: border-box;
+  /* hide scrollbars everywhere (Firefox) while keeping scroll behavior */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* hide scrollbars everywhere (WebKit / Chrome / Safari) */
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+}
+
+/* <p>/<h1>… carry a default vertical margin that inflates flex/auto-layout
+   gaps — neutralize it so spacing comes only from the component CSS. */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+body {
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  background: #fff;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100dvh;
+}
+
+/* Desktop / wide viewports: render the app as a fixed 375x812 phone frame,
+   centered on a neutral backdrop instead of stretching full-width. */
+@media (min-width: 768px) {
+  :root {
+    --app-w: 393px;
+    --app-h: 852px;
+    --app-radius: 32px;
+    --statusbar-h: 54px;
+    /* no device notch on desktop */
+    --safe-top: 0px;
+    --safe-bottom: 0px;
+  }
+
+  body {
+    background: #e5e5e5;
+  }
+
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+  }
+}
+
+/* Accessibility: honor reduced-motion globally — near-instant, no movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

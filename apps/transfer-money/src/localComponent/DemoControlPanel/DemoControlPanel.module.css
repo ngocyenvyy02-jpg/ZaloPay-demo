@@ -1,0 +1,96 @@
+/* Fixed to the viewport (not the phone frame) so the panel is always visible
+   regardless of window height — the frame is a fixed 852px tall and would push
+   a frame-anchored panel below the fold on short windows. */
+.root {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  z-index: 2100;
+  max-width: 372px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg, 12px);
+  padding: var(--space-md, 8px) var(--space-lg, 12px);
+  border-radius: var(--radius-xl, 16px);
+  overflow-x: auto;
+  background: rgba(0, 31, 62, 0.94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(8px);
+}
+
+.group {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 10px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.seg {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--radius-lg, 12px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.segBtn {
+  min-width: 28px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: var(--radius-md, 8px);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 16px;
+  cursor: pointer;
+  transition:
+    background var(--motion-duration-fast, 200ms) var(--motion-ease-out),
+    color var(--motion-duration-fast, 200ms) var(--motion-ease-out);
+}
+
+.segOn {
+  background: var(--color-primary-white, #fff);
+  color: var(--color-primary-dark, #001f3e);
+  font-weight: var(--font-weight-bold, 700);
+}
+
+.replayBtn {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-circle, 10000px);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-primary-white, #fff);
+  cursor: pointer;
+}
+
+.replayBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.replayBtn svg [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+.replayBtn:active {
+  transform: scale(0.94);
+}

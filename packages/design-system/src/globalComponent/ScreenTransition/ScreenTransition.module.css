@@ -1,0 +1,82 @@
+/* ScreenTransition — one stacked, animated screen layer.
+   Layers stack absolutely so an entering screen slides over the one below.
+   Timing/easing come from motion tokens.
+
+   kind="push"    → horizontal (iOS navigation push): enter from the right.
+   kind="present" → vertical (iOS modal present): enter from the bottom. */
+
+.layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+
+/* Base (root) layer inside a ScreenStack. iOS parallax: recedes left ~30%
+   while a push layer is on top, easing both ways. Timing matches the push
+   layer (--motion-duration-normal) so the two move together. Only transform
+   animates (GPU-friendly). */
+.stackBase {
+  position: absolute;
+  inset: 0;
+  transition: transform var(--motion-duration-normal) var(--motion-ease-standard);
+  will-change: transform;
+}
+.stackBasePushed {
+  transform: translateX(-30%);
+}
+
+/* PUSH — horizontal navigation */
+.push.pre-enter {
+  transform: translateX(100%);
+}
+.push.enter {
+  animation: push-in var(--motion-duration-normal) var(--motion-ease-standard) both;
+}
+.push.exit {
+  animation: push-out var(--motion-duration-normal) var(--motion-ease-standard) both;
+}
+
+@keyframes push-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes push-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* PRESENT — vertical modal (drawer easing for sheet-like slide) */
+.present.pre-enter {
+  transform: translateY(100%);
+}
+.present.enter {
+  animation: present-in var(--motion-duration-slow) var(--motion-ease-drawer) both;
+}
+.present.exit {
+  animation: present-out var(--motion-duration-slow) var(--motion-ease-drawer) both;
+}
+
+@keyframes present-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes present-out {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}

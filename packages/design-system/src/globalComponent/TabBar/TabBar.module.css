@@ -1,0 +1,101 @@
+/* Bottom TabBar (Figma "TabBar", node 51:5924). Equal-width items; each is a
+   top indicator + 24px icon + 12/16 label. Active = 2px blue indicator +
+   blue icon/label; default = 1px stroke2 indicator + dark icon/label. */
+
+.bar {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  background: var(--color-primary-white, #fff);
+}
+
+/* 1px baseline running the full width, behind the sliding indicator. */
+.bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-other-stroke2, #eef4fe);
+}
+
+/* The 2px blue bar that slides to the active tab (left/width animated). */
+.indicator {
+  position: absolute;
+  top: 0;
+  height: 2px;
+  z-index: 1; /* above the 1px baseline */
+  background: var(--color-primary-blue, #0033c9);
+  transition: left var(--motion-duration-fast, 200ms) var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+    width var(--motion-duration-fast, 200ms) var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.item {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Figma: item is [indicator 2px] + gap 4px + [content], pb 4px. The
+     indicator is lifted out of flow to slide, so reserve the 6px (2 + 4) it
+     used to occupy at the top; the content's own py:4px is separate. */
+  padding: 6px 0 4px;
+  overflow: clip;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary-dark, #001f3e);
+  transition: color var(--motion-duration-fast, 200ms) var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+.item.active {
+  color: var(--color-primary-blue, #0033c9);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 4px 8px;
+}
+
+/* 24px icon, tinted by the item's currentColor. zlp-icons hardcode a hex, so
+   force their paths to inherit — the same trap noted in AGENTS.md. */
+.icon {
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
+.icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon svg path {
+  fill: currentColor;
+}
+
+.label {
+  width: 100%;
+  font-family: "SF Pro Display", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+  color: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none;
+  }
+}

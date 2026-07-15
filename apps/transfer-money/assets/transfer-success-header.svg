@@ -1,0 +1,27 @@
+<svg viewBox="0 0 375 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="bg_fullpage_header" clip-path="url(#clip0_0_441)">
+<path id="Vector" d="M375.361 160.821C351.801 152.783 330.033 151.418 311.939 152.905L375.361 82.3521L387.683 68.6441L375.361 44L373.782 44.6451C372.1 45.3327 370.374 45.9955 368.651 46.6122C354.426 51.7356 339.47 54.3337 324.201 54.3337C307.043 54.3337 290.361 51.0746 274.619 44.6451L273.041 44L260.402 69.2786L262.208 70.0424C265.779 71.5505 269.392 72.9222 273.039 74.1592C289.455 79.7257 306.614 82.5435 324.201 82.5435C328.284 82.5435 332.397 82.3875 336.482 82.0774L273.039 152.648L260.719 166.356L273.041 190.998V191L274.62 190.355C276.295 189.669 278.021 189.008 279.749 188.388C293.983 183.263 308.939 180.663 324.203 180.663C341.356 180.663 358.039 183.924 373.785 190.355L375.362 191L388 165.723C383.738 163.864 379.522 162.241 375.361 160.821Z" fill="url(#paint0_linear_0_441)" stroke="url(#paint1_linear_0_441)" stroke-width="0.5" stroke-linejoin="round"/>
+<g id="Ellipse 2" filter="url(#filter0_f_0_441)">
+<ellipse cx="336" cy="-103.5" rx="162" ry="167.5" fill="var(--fill-0, #B3FFE3)"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_441" x="-26" y="-471" width="724" height="735" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="100" result="effect1_foregroundBlur_0_441"/>
+</filter>
+<linearGradient id="paint0_linear_0_441" x1="378.402" y1="46.5" x2="264.687" y2="178.815" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E1FFED"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_441" x1="376.402" y1="53" x2="266.402" y2="182.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E4FAFF" stop-opacity="0"/>
+<stop offset="0.504949" stop-color="#BAF6EB"/>
+<stop offset="1" stop-color="#CBFFE0"/>
+</linearGradient>
+<clipPath id="clip0_0_441">
+<rect width="375" height="240" fill="white"/>
+</clipPath>
+</defs>
+</svg>

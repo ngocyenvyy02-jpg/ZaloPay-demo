@@ -1,0 +1,86 @@
+/* NumericKeyboard (ported from @zpi/z-taste KeyPad, DEFAULT layout).
+   4 rows × 3 equal-width keys. Inner key = 75% of the cell; press feedback =
+   primary-blue @8% tint + digit jumps to a bigger, heavier size (exact z-taste
+   values). Height transition uses the instant motion token (100ms — z-taste
+   `height 0.1s ease-in-out`; `ease-in-out` kept verbatim, no DS ease token
+   matches it). Sizes: large 60px / 24→40px, small 48px / 20→34px; ≤344px
+   viewport collapses to 40px / 18→30px (z-taste media query). */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.key {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  border-radius: var(--radius-md, 8px);
+  background-color: transparent;
+  color: var(--color-primary-blue, #0033c9);
+  font-weight: var(--font-weight-bold, 700);
+  transition: height var(--motion-duration-instant, 100ms) ease-in-out;
+  transform: translateZ(0);
+  transform-origin: center;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* primary-blue (#0033c9) at 8% — exact z-taste press tint */
+.pressed {
+  background-color: rgba(0, 51, 201, 0.08);
+  font-weight: 900;
+}
+
+/* ---- Sizes (z-taste sizeKeyBoard) ---- */
+.large {
+  height: 60px;
+  font-size: 24px;
+}
+.large.pressed {
+  font-size: 40px;
+}
+
+.small {
+  height: 48px;
+  font-size: 20px;
+}
+.small.pressed {
+  font-size: 34px;
+}
+
+/* Very narrow phones (z-taste @media max-width: 344px) */
+@media (max-width: 344px) {
+  .large,
+  .small {
+    height: 40px;
+    font-size: 18px;
+  }
+  .large.pressed,
+  .small.pressed {
+    font-size: 30px;
+  }
+}

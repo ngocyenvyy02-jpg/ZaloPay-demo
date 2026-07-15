@@ -1,0 +1,149 @@
+/* Button (Design System 2.0, node 666:7586). Fixed height per size; padding on
+   the sides only (fixed height + border-box means secondary's 1px border never
+   changes the height). Geometry from Figma per size:
+     48: h48, px20, gap8, radius8, text 16/20, icon 24
+     40: h40, px16, gap4, radius8, text 14/18, icon 16
+     32: h32, px12, gap4, radius6, text 12/16, icon 16
+     24: h24, px8,  gap4, radius6, text 12/16, icon 16
+   Primary: blue fill/white text. Secondary: white bg, 1px blue border, blue
+   text. Pressed: smooth scale 0.99. Disabled per variant. Text always bold. */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Pressed feedback: smooth scale-down. The permanent translateZ(0) keeps the
+     button on a GPU layer so text rasterizes the same way in both states —
+     without it, scaling to 0.99 re-snaps the text to different subpixels and
+     the label visibly "jumps" while pressing. */
+  transform: translateZ(0);
+  transition: transform var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.root:not(:disabled):active {
+  transform: scale(0.99) translateZ(0);
+}
+
+.label {
+  font-weight: 700; /* token font.weight.bold — always bold */
+  white-space: nowrap;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+/* ---- Sizes (height / padding / radius / gap / font / icon) ---- */
+.size48 {
+  height: 48px;
+  padding: 0 20px;
+  gap: 8px;
+  border-radius: 8px;
+}
+.size48 .label {
+  font-size: 16px;
+  line-height: 20px;
+}
+.size48 .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.size40 {
+  height: 40px;
+  padding: 0 16px;
+  gap: 4px;
+  border-radius: 8px;
+}
+.size40 .label {
+  font-size: 14px;
+  line-height: 18px;
+}
+.size40 .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.size32 {
+  height: 32px;
+  padding: 0 12px;
+  gap: 4px;
+  border-radius: 6px;
+}
+.size32 .label {
+  font-size: 12px;
+  line-height: 16px;
+}
+.size32 .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.size24 {
+  height: 24px;
+  padding: 0 8px;
+  gap: 4px;
+  border-radius: 6px;
+}
+.size24 .label {
+  font-size: 12px;
+  line-height: 16px;
+}
+.size24 .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- Primary ---- */
+.primary {
+  background: var(--color-primary-blue, #0033c9);
+  color: var(--color-primary-white, #fff);
+}
+
+/* ---- Secondary ---- */
+.secondary {
+  background: var(--color-primary-white, #fff);
+  color: var(--color-primary-blue, #0033c9);
+  border: 1px solid var(--color-primary-blue, #0033c9);
+}
+
+/* ---- Disabled (per variant) ---- */
+.primary:disabled {
+  background: var(--color-variant-dark-25, #f2f4f5);
+  color: var(--color-variant-dark-200, #99a5b2);
+  cursor: default;
+}
+.secondary:disabled {
+  background: var(--color-primary-white, #fff);
+  border-color: var(--color-variant-dark-100, #ccd2d8);
+  color: var(--color-variant-dark-200, #99a5b2);
+  cursor: default;
+}
+
+/* ---- Version 3.0 (new): pill radius at every size; secondary = blue-25 bg,
+   no border, blue text. Primary is unchanged except for the pill radius. ---- */
+.v3 {
+  border-radius: 9999px;
+}
+.v3.secondary {
+  background: var(--color-variant-blue-25, #e7f6ff);
+  border: none;
+  color: var(--color-primary-blue, #0033c9);
+}
+.v3.secondary:disabled {
+  background: var(--color-variant-dark-25, #f2f4f5);
+  color: var(--color-variant-dark-200, #99a5b2);
+}

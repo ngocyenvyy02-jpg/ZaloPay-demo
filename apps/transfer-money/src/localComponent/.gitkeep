@@ -1,0 +1,4 @@
+# Project-specific components live here — reusable within THIS app but not
+# shared enough for @zlp/design-system. Screens go in ../screens/; truly shared
+# components belong in packages/design-system/. Delete this file once you add a
+# real component.

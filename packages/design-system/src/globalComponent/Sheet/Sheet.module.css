@@ -1,0 +1,88 @@
+/* Full-frame layer above all app chrome (status bar/control are ~1000). */
+.root {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-other-overlay);
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+/* Shared sheet surface. */
+.sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary-white);
+  transition: transform var(--motion-duration-slow) var(--motion-ease-drawer);
+  will-change: transform;
+  overflow: hidden; /* clip rounded corners; inner content owns its own scroll */
+}
+
+/* Top edge the sheet must never cross: safe area + status bar + nav + 16px. */
+.root {
+  --sheet-top-gap: calc(
+    var(--safe-top) + var(--statusbar-h) + var(--nav-h) + 16px
+  );
+}
+
+/* ---- Tray: 16px sides, 32px bottom, all corners rounded ---- */
+.tray .sheet {
+  margin: 0 16px 32px;
+  border-radius: 24px;
+  max-height: calc(100% - var(--sheet-top-gap) - 32px);
+}
+
+/* ---- Bottom-sheet: full width, flush bottom, top corners rounded ---- */
+.bottomsheet .sheet {
+  margin: 0;
+  border-radius: 24px 24px 0 0;
+  max-height: calc(100% - var(--sheet-top-gap));
+}
+
+/* ---- Non-modal (z-taste keyboard-tray style): no overlay, background stays
+   interactive. The root stops catching pointer events; only the sheet surface
+   does. A soft shadow (primary-dark @12%, exact z-taste 0 0 24px #001f3e1f)
+   separates the sheet from the live content behind it. ---- */
+.nonModal {
+  pointer-events: none;
+}
+.nonModal .sheet {
+  pointer-events: auto;
+  box-shadow: 0 0 24px 0 rgba(0, 31, 62, 0.12);
+}
+
+/* ---- Enter (visible) ---- */
+.enter .overlay {
+  opacity: 1;
+}
+.enter .sheet {
+  transform: translateY(0);
+}
+
+/* ---- Exit / pre-enter (hidden): pushed fully below the frame ----
+   Sheet animates via CSS transition (not @keyframes), so its off-screen
+   resting state and its exit target are the SAME position — the transition
+   tweens between this and .enter in both directions. "pre-enter" is the
+   first committed frame when opening (see useMountTransition); it must land
+   on this same hidden position so the open transition tweens up from below,
+   and it shares .exit's rules to stay in sync. */
+.exit .overlay,
+.pre-enter .overlay {
+  opacity: 0;
+}
+.tray.exit .sheet,
+.tray.pre-enter .sheet {
+  transform: translateY(calc(100% + 32px));
+}
+.bottomsheet.exit .sheet,
+.bottomsheet.pre-enter .sheet {
+  transform: translateY(100%);
+}

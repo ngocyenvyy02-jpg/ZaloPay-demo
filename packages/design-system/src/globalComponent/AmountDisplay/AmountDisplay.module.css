@@ -1,0 +1,185 @@
+/* AmountDisplay (ported from @zpi/z-taste NumberDisplay). Digits 48px bold
+   primary-blue (40px when overflowing, and on ≤344px viewports); only the last
+   digit animates — fade-in 95ms on type (translateY 20px, motion-ease-standard),
+   fade-out 100ms on delete. Fake cursor: 2.5×32px blinking span, 1s loop.
+   Error: red-600 14/18, fade 50ms; shake: 250ms translate/rotate keyframe.
+   Durations 95/100/50/250ms + blink 1s are exact z-taste values (no DS motion
+   token covers them — kept verbatim, flagged). */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Full width so clientWidth reflects the AVAILABLE space, not the hugged
+     content — otherwise the overflow check always trips and shrinks. */
+  width: 100%;
+}
+.root.left {
+  align-items: flex-start;
+}
+.root.right {
+  align-items: flex-end;
+}
+
+/* ---- Digits row ---- */
+.row {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--amount-size, 48px);
+  font-size: var(--amount-size, 48px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-primary-blue, #0033c9);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Overflow shrink — ~0.83× of the configured size (z-taste shrank 48→40). */
+.row.small {
+  font-size: calc(var(--amount-size, 48px) * 0.833);
+}
+
+@media (max-width: 344px) {
+  .row.small {
+    font-size: calc(var(--amount-size, 48px) * 0.833);
+  }
+}
+
+.row.shake {
+  animation: amount-shake 250ms ease-in-out;
+}
+
+.digit {
+  display: inline-block;
+  transform: translateZ(0);
+  transform-origin: center;
+  user-select: none;
+  pointer-events: none;
+}
+
+.digitIn {
+  animation: amount-digit-in 95ms var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+  will-change: transform, opacity;
+}
+
+.digitOut {
+  animation: amount-digit-out 100ms var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+  will-change: opacity;
+}
+
+/* ---- Cursor + unit, pinned just past the last digit ---- */
+.tail {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  transition: right var(--motion-duration-instant, 100ms) ease-in-out;
+}
+
+.cursor {
+  display: inline-block;
+  width: 2.5px;
+  /* scales with the digit size — 32px at the default 48 (z-taste ratio 2/3) */
+  height: calc(var(--amount-size, 48px) * 0.6667);
+  background-color: var(--color-primary-blue, #0033c9);
+  animation: amount-cursor-blink 1s infinite;
+  vertical-align: middle;
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+.unit {
+  position: relative;
+  top: -4px;
+  right: -6px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+  color: var(--color-variant-dark-100, #ccd2d8);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ---- Error text ---- */
+.error {
+  padding: 6px 24px 8px;
+  color: var(--color-variant-red-600, #b61230);
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  animation: amount-digit-in 50ms ease-out;
+  user-select: none;
+  pointer-events: none;
+}
+
+.errorOut {
+  animation: amount-digit-out 50ms ease-out forwards;
+}
+
+/* ---- Keyframes ---- */
+@keyframes amount-digit-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes amount-digit-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes amount-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* z-taste error shake — small random-walk translate/rotate. */
+@keyframes amount-shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}

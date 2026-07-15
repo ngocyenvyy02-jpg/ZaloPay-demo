@@ -1,10 +1,5 @@
-# dependencies
 node_modules/
-
-# build output (Vercel builds this itself)
 dist/
-
-# local tooling
-.claude/
+*.tsbuildinfo
 .DS_Store
-*.log
+.vercel/

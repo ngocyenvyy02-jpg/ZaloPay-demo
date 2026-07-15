@@ -1,0 +1,215 @@
+/* Input field (Design System 3.0). Geometry read from Figma per size:
+     S: height 40, radius 8,  font 14/18, placeholder #99a5b2, NO label
+     M: height 52, radius 12, font 16/20, placeholder #ccd2d8
+     L: height 80, radius 12, font 24/36, placeholder #ccd2d8
+   Label (M/L only) sits INSIDE the box, stacked above the input text (12px,
+   grey). Container padding 16x / 8y; trailing icons 24px, gap 16. Colors from
+   tokens: border #ccd2d8 (variant-dark-100), focus/cursor #0033c9
+   (primary-blue), error #e3173c (secondary-red), value #001f3e (primary-dark),
+   disabled bg #f2f4f5 (variant-dark-25), label #66798b (variant-dark-300). */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* field + hint stack */
+  width: 100%;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+}
+
+/* ---- Field container (the box) — a centered row.
+   Height is FIXED per size (see size blocks), NOT derived from content, so the
+   box never jumps when typing or when the label toggles. Content (label + text)
+   is vertically centered inside the fixed height. ---- */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* token size-spacing-xl */
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 16px; /* vertical centering comes from the fixed height, not padding */
+  background: var(--color-primary-white, #fff);
+  border: 1px solid var(--color-variant-dark-100, #ccd2d8);
+  transition: border-color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Content column: label (inside) stacked over the input line.
+   Fixed height per size, justify-center, NO gap — label + text pack tight
+   (their line-heights provide the spacing), matching Figma. ---- */
+.content {
+  display: flex;
+  flex: 1 0 0;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Label INSIDE the box, above the text (M/L only). */
+.label {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--color-variant-dark-300, #66798b);
+}
+
+/* ---- Native input (transparent; container owns the chrome) ---- */
+.input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  color: var(--color-primary-dark, #001f3e);
+  caret-color: var(--color-primary-blue, #0033c9);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Trailing group: clear + optional divider + right icon ---- */
+.trailing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Clear button — 40×40 hit area (spec), 24px glyph centered. */
+.clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 -8px; /* keep 40px hit area without growing the row */
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-variant-dark-200, #99a5b2);
+}
+.clearIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-variant-dark-100, #ccd2d8);
+}
+.rightIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-variant-dark-200, #99a5b2);
+  flex-shrink: 0;
+}
+
+/* ---- Hint / error row (Figma "Hint_cell") ----
+   gap 4, items-start, pl 2. Icon in its own wrapper (items-center + pt 2) so it
+   aligns to the first text line; text flex-1, wraps up to ~2 lines. */
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  padding-left: 2px;
+}
+.hintIconWrap {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.hintIcon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  color: var(--color-secondary-red, #e3173c);
+}
+.hintText {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-variant-dark-300, #66798b);
+  /* wrap up to 2 lines, then clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ================= Sizes =================
+   FIXED box height per Figma (S 40 / M 52 / L 80) — never content-derived.
+   Radius 8 (S) / 12 (M/L). */
+
+/* S: box 40, radius 8, font 14/18, darker placeholder, no label. */
+.sizeS .field {
+  height: 40px;
+  border-radius: 8px;
+}
+.sizeS .input {
+  font-size: 14px;
+  line-height: 18px;
+}
+.sizeS .input::placeholder {
+  color: var(--color-variant-dark-200, #99a5b2);
+}
+
+/* M: box 52, radius 12, font 16/20. */
+.sizeM .field {
+  height: 52px;
+  border-radius: 12px;
+}
+.sizeM .input {
+  font-size: 16px;
+  line-height: 20px;
+}
+.sizeM .input::placeholder {
+  color: var(--color-variant-dark-100, #ccd2d8);
+}
+
+/* L: box 80, radius 12, font 24/36. */
+.sizeL .field {
+  height: 80px;
+  border-radius: 12px;
+}
+.sizeL .input {
+  font-size: 24px;
+  line-height: 36px;
+}
+.sizeL .input::placeholder {
+  color: var(--color-variant-dark-100, #ccd2d8);
+}
+
+/* ================= States ================= */
+/* Focused: blue border. */
+.focused:not(.error):not(.disabled) .field {
+  border-color: var(--color-primary-blue, #0033c9);
+}
+
+/* Error: red border + red hint text. */
+.error .field {
+  border-color: var(--color-secondary-red, #e3173c);
+}
+.error .hintText {
+  color: var(--color-secondary-red, #e3173c);
+}
+
+/* Disabled: grey background, muted, no interaction. */
+.disabled .field {
+  background: var(--color-variant-dark-25, #f2f4f5);
+}
+.disabled .input {
+  color: var(--color-variant-dark-200, #99a5b2);
+  cursor: default;
+}
+.disabled .label {
+  opacity: 0.6;
+}

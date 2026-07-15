@@ -1,0 +1,55 @@
+/* Label / status tag (Design System 2.0, node 14551:163203). px8 py2, radius
+   4, text 12/16 (regular or bold). Colors read from Figma per variant:
+     positive: solid primary-green / sec green-50 + green-700
+     warning:  solid secondary-orange / sec orange-50 + orange-700
+     negative: solid secondary-red / sec red-50 + red-700
+     neutral:  solid dark-300 / sec dark-50 + dark-400 */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 4px; /* token size-radius-s */
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 12px; /* token font.size.s */
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+  color: var(--color-primary-white, #fff);
+}
+.bold {
+  font-weight: 700;
+}
+
+/* ---- Primary (solid) ---- */
+.positive {
+  background: var(--color-primary-green, #00cf6a);
+}
+.warning {
+  background: var(--color-secondary-orange, #ff8d00);
+}
+.negative {
+  background: var(--color-secondary-red, #e3173c);
+}
+.neutral {
+  background: var(--color-variant-dark-300, #66798b);
+}
+
+/* ---- Secondary (tint + shade text) ---- */
+.positive.secondary {
+  background: var(--color-variant-green-50, #eefff5);
+  color: var(--color-variant-green-700, #007c40);
+}
+.warning.secondary {
+  background: var(--color-variant-orange-50, #fff6d3);
+  color: var(--color-variant-orange-700, #995500);
+}
+.negative.secondary {
+  background: var(--color-variant-red-50, #fce8ec);
+  color: var(--color-variant-red-700, #880e24);
+}
+.neutral.secondary {
+  background: var(--color-variant-dark-50, #e6e9ec);
+  color: var(--color-variant-dark-400, #334c65);
+}

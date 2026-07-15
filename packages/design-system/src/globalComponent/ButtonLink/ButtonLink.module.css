@@ -1,0 +1,72 @@
+/* Link button (Design System 2.0, nodes 1620:12843 Large_16 / 1620:13174
+   Small_14). Text-only: no background, border, or padding. Per size:
+     16: gap 8, font 16/20, icon 24
+     14: gap 4, font 14/18, icon 16
+   State = text/icon color: actived primary-blue, pressed blue-600 (color
+   change ONLY, no scale), disabled dark-200. Icons inherit via currentColor. */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  color: var(--color-primary-blue, #0033c9); /* actived */
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+.label {
+  font-weight: 400; /* regular by default */
+  white-space: nowrap;
+}
+.bold .label {
+  font-weight: 700; /* token font.weight.bold */
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: inherit; /* icon follows the text color via currentColor */
+}
+
+/* ---- Sizes (gap / font / icon) ---- */
+.size16 {
+  gap: 8px;
+}
+.size16 .label {
+  font-size: 16px;
+  line-height: 20px;
+}
+.size16 .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.size14 {
+  gap: 4px;
+}
+.size14 .label {
+  font-size: 14px;
+  line-height: 18px;
+}
+.size14 .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Pressed: darker blue, color change only (no scale). */
+.root:not(:disabled):active {
+  color: var(--color-variant-blue-600, #0029a1);
+}
+
+/* Disabled: muted, no interaction. */
+.root:disabled {
+  color: var(--color-variant-dark-200, #99a5b2);
+  cursor: default;
+}

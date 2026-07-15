@@ -1,0 +1,73 @@
+/* LoadingDots (ported from @zpi/z-taste LoadingDots). The classic single-div
+   trick: one 8px dot parked off-screen at -9999px, three box-shadow copies at
+   9984/9999/10014px land 15px apart inside the container; the keyframes lift
+   each copy -8px in sequence. 1.5s linear loop (exact z-taste timing — no DS
+   motion token covers a looping keyframe; kept verbatim). Dots use
+   currentColor so CSS `color` tints them (source hardcoded white). */
+
+.root {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 40px;
+}
+
+.dot {
+  position: relative;
+  left: -9999px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-s, 4px);
+  background-color: currentColor;
+  box-shadow:
+    9984px 0 0 0 currentColor,
+    9999px 0 0 0 currentColor,
+    10014px 0 0 0 currentColor;
+  animation: dot-typing 1.5s infinite linear;
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+  16.667% {
+    box-shadow:
+      9984px -8px 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+  33.333% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px -8px 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+  66.667% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+  83.333% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px -8px 0 0 currentColor;
+  }
+  100% {
+    box-shadow:
+      9984px 0 0 0 currentColor,
+      9999px 0 0 0 currentColor,
+      10014px 0 0 0 currentColor;
+  }
+}

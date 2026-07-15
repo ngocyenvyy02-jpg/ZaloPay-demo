@@ -1,0 +1,20 @@
+/* Notification count badge (Figma "numberic", node 14766:157789). Red pill,
+   h16, min-width 16 (1 char = perfect circle), px4, bold 12/16 white. */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  min-width: 16px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  border-radius: 100px;
+  background: var(--color-secondary-red, #e3173c);
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 12px; /* token font.size.s */
+  font-weight: 700;
+  line-height: 16px;
+  color: var(--color-primary-white, #fff);
+  white-space: nowrap;
+}

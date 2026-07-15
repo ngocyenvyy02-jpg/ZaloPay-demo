@@ -1,0 +1,253 @@
+/* Root fills the app shell (.stack sizes via --app-w/--app-h) — a screen NEVER
+   hardcodes the Figma canvas size (375/393/812/852). See build.md "Responsive". */
+.root {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary-white, #fff);
+}
+
+/* The one scroll owner; inner regions grow via flex, never fixed px heights.
+   padding-bottom clears the fixed DemoControlPanel pinned to .root's bottom. */
+.scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-bottom: 76px;
+}
+
+.navigation {
+  min-height: calc(var(--safe-top, 0px) + var(--statusbar-h, 0px) + 60px);
+  --navigation-bar-bg: var(--color-primary-white, #fff);
+}
+
+.navActions {
+  position: absolute;
+  top: calc(var(--safe-top, 0px) + var(--statusbar-h, 0px) + 12px);
+  left: var(--space-xl, 16px);
+  z-index: 21;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl, 16px);
+}
+
+.scanIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.navCoin {
+  width: 32px;
+  height: 32px;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.amountSection {
+  flex: 1 1 auto;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl, 20px) var(--space-xl, 16px) 24px;
+}
+
+.amountContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px; /* Figma exact; no spacing token. */
+}
+
+.hint {
+  padding-bottom: var(--space-s, 4px);
+  color: var(--color-variant-dark-300, #66798b);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 20px;
+  text-align: center;
+}
+
+.amount {
+  width: 100%;
+}
+
+.noteInput {
+  width: 160px;
+  max-width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-variant-dark-50, #e6e9ec);
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-variant-dark-300, #66798b);
+  font: inherit;
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  text-align: center;
+}
+
+.noteInput:focus {
+  border-bottom-color: var(--color-primary-blue, #0033c9);
+}
+
+.rewardSlot {
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-lg, 12px);
+}
+
+.recipientSection {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Figma exact; no spacing token. */
+  padding: 0 24px; /* Figma exact; no spacing token. */
+}
+
+.recipientHeading {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md, 8px);
+}
+
+.recipientHeading h1 {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-variant-dark-200, #99a5b2);
+  font-size: 18px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 28px; /* Figma exact; no line-height token. */
+}
+
+.saveAccount {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md, 8px);
+  color: var(--color-variant-dark-300, #66798b);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+}
+
+.recipientCard {
+  position: relative;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg, 12px);
+  padding: var(--space-lg, 12px);
+  border: 1.5px solid var(--color-other-stroke2, #eef4fe);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--color-primary-white, #fff);
+}
+
+.bankLogoBox {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bankLogoBox img {
+  width: 36px;
+  height: 36px;
+}
+
+.recipientCopy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* Figma exact; no spacing token. */
+  padding-right: var(--space-2xl, 20px);
+}
+
+.recipientName {
+  color: var(--color-primary-dark, #001f3e);
+  font-size: 16px;
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountNumber {
+  color: var(--color-variant-dark-300, #66798b);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+}
+
+.removeButton {
+  position: absolute;
+  top: 6px; /* Figma exact; no spacing token. */
+  right: var(--space-s, 4px);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-s, 4px);
+  border: 0;
+  background: var(--color-primary-white, #fff);
+  color: var(--color-variant-dark-200, #99a5b2);
+  cursor: pointer;
+}
+
+.removeButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.removeButton svg [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+.removeButton:active {
+  transform: scale(0.99);
+}
+
+.buttonSection {
+  flex: 0 0 auto;
+  padding: var(--space-md, 8px) 24px var(--space-s, 4px); /* 24px is exact Figma; no token. */
+}
+
+.keyboardSpace {
+  flex: 0 1 272px; /* Reserves the hidden keypad region shown by this Figma state. */
+  min-height: 0;
+}
+
+@media (max-height: 700px) {
+  .amountSection {
+    min-height: 220px;
+    padding-top: var(--space-lg, 12px);
+    padding-bottom: var(--space-xl, 16px);
+  }
+
+  .keyboardSpace {
+    flex-basis: 160px;
+  }
+}

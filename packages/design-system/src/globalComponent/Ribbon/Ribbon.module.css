@@ -1,0 +1,133 @@
+/* Ribbon (Design System 2.0, node 14551:163217). Colors read from Figma:
+   Type 1 (h16, px4 py1, radius 6/6/6 + sharp bottom-left, bold 10/12):
+     primary  = solid color bg + 1px white border + white text
+     secondary= *-25 bg + tint border (green-400/red-100/dark-100) + shade text
+                (green-600 / red / dark-300)
+   Type 2 (floating tag h18, px6 pt1, radius 4/4/4 + sharp bottom-right, card
+     shadow, white bold 12/16, right-aligned) + 2px curved fold in *-700
+     (green-700 / red-700 / dark-700) hanging under the right edge.
+   Gift (24px star badge, red only): real Figma vectors, primary variant has
+     the level-2 shadow. */
+
+/* ================= Type 1 ================= */
+.type1 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  padding: 1px 4px;
+  box-sizing: border-box;
+  border: 1px solid;
+  border-radius: 6px 6px 6px 0; /* sharp bottom-left */
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 10px; /* token font.size.xs */
+  font-weight: 700;
+  line-height: 12px;
+  white-space: nowrap;
+}
+/* primary (solid) */
+.type1.green {
+  background: var(--color-primary-green, #00cf6a);
+  border-color: var(--color-primary-white, #fff);
+  color: var(--color-primary-white, #fff);
+}
+.type1.red {
+  background: var(--color-secondary-red, #e3173c);
+  border-color: var(--color-primary-white, #fff);
+  color: var(--color-primary-white, #fff);
+}
+.type1.grey {
+  background: var(--color-variant-dark-300, #66798b);
+  border-color: var(--color-primary-white, #fff);
+  color: var(--color-primary-white, #fff);
+}
+/* secondary (tint) */
+.type1.green.secondary {
+  background: var(--color-variant-green-25, #f2fff8);
+  border-color: var(--color-variant-green-400, #33f596);
+  color: var(--color-variant-green-600, #00a655);
+}
+.type1.red.secondary {
+  background: var(--color-variant-red-25, #fef3f5);
+  border-color: var(--color-variant-red-100, #f9d1d8);
+  color: var(--color-secondary-red, #e3173c);
+}
+.type1.grey.secondary {
+  background: var(--color-variant-dark-25, #f2f4f5);
+  border-color: var(--color-variant-dark-100, #ccd2d8);
+  color: var(--color-variant-dark-300, #66798b);
+}
+
+/* ================= Type 2 ================= */
+.type2 {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end; /* fold sticks under the right edge */
+}
+.type2Tag {
+  display: flex;
+  align-items: center;
+  height: 18px;
+  padding: 1px 6px 0;
+  box-sizing: border-box;
+  border-radius: 4px 4px 0 4px; /* sharp bottom-right */
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 12px; /* token font.size.s */
+  font-weight: 700;
+  line-height: 16px;
+  white-space: nowrap;
+  color: var(--color-primary-white, #fff);
+  /* token effect "V2 Shadow Card" */
+  box-shadow: 0 2px 12px rgba(0, 31, 62, 0.05);
+}
+.type2.green .type2Tag {
+  background: var(--color-primary-green, #00cf6a);
+}
+.type2.red .type2Tag {
+  background: var(--color-secondary-red, #e3173c);
+}
+.type2.grey .type2Tag {
+  background: var(--color-variant-dark-300, #66798b);
+}
+.fold {
+  display: block;
+  width: 2px;
+  height: 2px;
+}
+.type2.green .fold {
+  color: var(--color-variant-green-700, #007c40);
+}
+.type2.red .fold {
+  color: var(--color-variant-red-700, #880e24);
+}
+.type2.grey .fold {
+  color: var(--color-variant-dark-700, #001325);
+}
+
+/* ================= Gift (24px star badge, red) ================= */
+.gift {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+.giftPrimary {
+  /* token effect "V2 Shadow level2" */
+  filter: drop-shadow(0 1px 4px rgba(0, 31, 62, 0.08));
+}
+/* Figma placement: star inset 4.17% 8.33% (with slight overdraw), glyph inset
+   23.53% 29.64% 27.6% 28.29% of the 24px box. */
+.giftStar {
+  position: absolute;
+  left: 4%;
+  top: 2.6%;
+  width: 92%;
+  height: 94.8%;
+}
+.giftGlyph {
+  position: absolute;
+  left: 28.29%;
+  top: 23.53%;
+  width: 42.07%;
+  height: 48.87%;
+}

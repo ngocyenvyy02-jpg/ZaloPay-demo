@@ -1,0 +1,93 @@
+/* Tabs (Design System 2.0 — tab_item 617:7445 / Tabs 9518:126489).
+   Item: h48, content px16 py8 gap8, icon 24, label bold 14/18. Active =
+   primary-blue text + 2px blue indicator; inactive = dark-300 text over a 1px
+   dark-50 baseline.
+   Fixed = equal-width items filling the container (≤4 tabs, per guides);
+   scrollable = hug-width items + horizontal scroll (>4 tabs). The indicator
+   is one absolute bar that SLIDES to the active tab (motion token `standard`
+   — the z-taste reposition curve). */
+
+.root {
+  width: 100%; /* guides: tab container spans the full UI width */
+  background: var(--color-primary-white, #fff);
+}
+
+.track {
+  position: relative;
+  display: flex;
+  min-width: 100%;
+}
+
+/* 1px baseline across the whole track (inactive indicator in Figma). */
+.track::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-variant-dark-50, #e6e9ec);
+}
+
+/* ---- Item ---- */
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* token size-spacing-md */
+  height: 48px;
+  padding: 8px 16px; /* guides: side padding min 16px */
+  flex: 1 1 0; /* fixed layout: equal widths */
+  min-width: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  color: var(--color-variant-dark-300, #66798b); /* inactive */
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.item.active {
+  color: var(--color-primary-blue, #0033c9);
+}
+
+.label {
+  font-size: 14px; /* token font.size.md */
+  font-weight: 700; /* token font.weight.bold */
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: inherit; /* follows active/inactive color via currentColor */
+}
+
+/* ---- Sliding active indicator (2px, animated reposition) ---- */
+.indicator {
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-primary-blue, #0033c9);
+  z-index: 1; /* above the 1px baseline */
+  transition: left var(--motion-duration-fast, 200ms)
+      var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+    width var(--motion-duration-fast, 200ms)
+      var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* ---- Scrollable (>4 tabs): hug-width items, horizontal scroll ---- */
+.scrollable {
+  overflow-x: auto;
+}
+.scrollable .item {
+  flex: 0 0 auto; /* hug content */
+}

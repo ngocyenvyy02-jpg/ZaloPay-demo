@@ -1,0 +1,62 @@
+/* AppControl — the mini-app control chip (••• | ✕).
+   Like the status bar, it lives at the App level and stays fixed in the
+   top-right corner regardless of which screen is shown or transitioning.
+   Sits just below the status bar area. */
+
+.root {
+  position: absolute;
+  top: calc(var(--safe-top) + var(--statusbar-h) + 16px);
+  right: 16px;
+  z-index: 1000;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 100px;
+  border: 0.5px solid var(--app-control-border, var(--color-variant-blue-50));
+  background: var(--app-control-bg, rgba(255, 255, 255, 0.4));
+  backdrop-filter: blur(4px);
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--app-control-fg, var(--color-primary-dark));
+  cursor: pointer;
+  transition: transform var(--motion-duration-instant) var(--motion-ease-out);
+}
+
+.button:active {
+  transform: scale(0.99);
+}
+
+.divider {
+  width: 1px;
+  height: 18px;
+  background: var(--app-control-divider, var(--color-variant-blue-25));
+  flex-shrink: 0;
+}
+
+.dark {
+  --app-control-bg: rgba(255, 255, 255, 0.4);
+  --app-control-border: var(--color-variant-blue-50);
+  --app-control-divider: var(--color-variant-blue-25);
+  --app-control-fg: var(--color-primary-dark);
+}
+
+.light {
+  --app-control-bg: rgba(0, 31, 62, 0.2);
+  --app-control-border: rgba(255, 255, 255, 0.2);
+  --app-control-divider: rgba(255, 255, 255, 0.2);
+  --app-control-fg: var(--color-primary-white);
+}

@@ -1,0 +1,65 @@
+/* SegmentedTabs (Design System — node 34:2184 "Tabs" segmented variant).
+   Pill track: radius 100, 3px padding, bg other-background (#F5F9FF). Segments
+   are equal-width (flex:1), px16 py8, bold 14/18. The active segment is a WHITE
+   pill (radius 100) that SLIDES to the active position (motion token
+   `standard` — the reposition curve). Active label = primary-blue, inactive =
+   dark-300. Labels truncate to one line on overflow. */
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  padding: 3px;
+  border-radius: 100px;
+  background: var(--color-other-background, #f5f9ff);
+}
+
+/* ---- Sliding white active pill ---- */
+.thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 100px;
+  background: var(--color-primary-white, #fff);
+  z-index: 0; /* under the labels */
+  transition: left var(--motion-duration-fast, 200ms)
+      var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1)),
+    width var(--motion-duration-fast, 200ms)
+      var(--motion-ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+/* ---- Segment ---- */
+.item {
+  position: relative;
+  z-index: 1; /* above the sliding pill */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0; /* equal widths */
+  min-width: 0; /* let the label truncate inside the flex item */
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-variant-dark-300, #66798b); /* inactive */
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.item.active {
+  color: var(--color-primary-blue, #0033c9);
+}
+.item:active {
+  transform: scale(0.99); /* DS universal pressed state */
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap; /* one line — truncate on overflow */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

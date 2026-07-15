@@ -1,0 +1,60 @@
+/* Radio (Figma "radiobox", node 560:4926). Ring/dot are the real Figma SVGs
+   (24px, checked.svg / unchecked.svg) imported via svgr; they use currentColor
+   so CSS `color` drives the state color from design tokens:
+     checked + enabled   -> primary-blue    (#0033C9)
+     unchecked + enabled -> variant-dark-100 (#CCD2D8)
+     disabled (either)   -> variant-dark-200 (#99A5B2)
+   Base row/input/label come from ../shared/formControl.module.css. */
+
+.root {
+  composes: root from "../shared/formControl.module.css";
+}
+
+.input {
+  composes: input from "../shared/formControl.module.css";
+}
+
+.label {
+  composes: label from "../shared/formControl.module.css";
+}
+
+/* 24px icon container. `color` tints the SVG ring via currentColor.
+   Default (unchecked + enabled) = variant-dark-100. */
+.ring {
+  display: block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--color-variant-dark-100, #ccd2d8);
+  transition: color var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+.ring svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Selected + enabled: blue ring + dot. */
+.input:checked + .ring {
+  color: var(--color-primary-blue, #0033c9);
+}
+
+/* ---- Pressed feedback (template convention) ---- */
+.root:not(.disabled):active .ring {
+  transform: scale(0.99);
+  transition: transform var(--motion-duration-instant, 100ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Disabled: dark-200 for both states; label dims ---- */
+.disabled {
+  cursor: default;
+}
+.disabled .label {
+  opacity: 0.6;
+}
+.disabled .ring,
+.disabled .input:checked + .ring {
+  color: var(--color-variant-dark-200, #99a5b2);
+}

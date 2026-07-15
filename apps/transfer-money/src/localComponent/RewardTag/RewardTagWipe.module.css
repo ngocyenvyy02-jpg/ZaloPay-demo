@@ -1,0 +1,161 @@
+.root {
+  position: relative;
+  min-width: 152px;
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  border-radius: var(--radius-circle, 10000px);
+  cursor: pointer;
+}
+
+.root:active {
+  transform: scale(0.99);
+}
+
+/* Reward layer — sits underneath, revealed as the foil wipes away. */
+.revealed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s, 4px);
+  padding: var(--space-md, 8px) var(--space-lg, 12px);
+  border: 0;
+  background: var(--color-variant-orange-50, #fff6d3);
+  color: var(--color-variant-orange-600, #cc7100);
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  white-space: nowrap;
+}
+
+.revealedText {
+  font-weight: var(--font-weight-regular, 400);
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s, 4px);
+  color: var(--color-variant-orange-600, #cc7100);
+  font-weight: var(--font-weight-bold, 700);
+  font-variant-numeric: tabular-nums;
+}
+
+.giftIcon,
+.coverGift {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.giftIcon [fill]:not([fill="none"]),
+.coverGift [fill]:not([fill="none"]) {
+  fill: currentColor;
+}
+
+/* Foil cover — the "unscratched" surface. Silver metallic gradient + diagonal
+   hatch so the resting tag reads as a scratch card. */
+.cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s, 4px);
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.4) 0 2px,
+      transparent 2px 7px
+    ),
+    repeating-linear-gradient(
+      65deg,
+      rgba(0, 31, 62, 0.06) 0 2px,
+      transparent 2px 7px
+    ),
+    linear-gradient(135deg, #c3c9d2 0%, #eef1f5 46%, #aab2be 100%);
+  color: #5b6472;
+  clip-path: inset(0 0 0 0%);
+}
+
+.coverText {
+  font-size: 13px;
+  font-weight: var(--font-weight-bold, 700);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.coverGift {
+  position: relative;
+  z-index: 1;
+}
+
+.shimmer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.75),
+    transparent
+  );
+  transform: translateX(-120%);
+  animation: reward-wipe-idle-shimmer 2.4s var(--motion-ease-out) 0.6s infinite;
+}
+
+/* Tap → foil wipes off left→right, revealing the reward underneath. */
+.coverWiping {
+  animation: reward-wipe-reveal 600ms var(--motion-ease-standard) forwards;
+}
+
+.coverWiping .shimmer {
+  animation: reward-wipe-sweep 600ms var(--motion-ease-standard) forwards;
+}
+
+@keyframes reward-wipe-reveal {
+  from {
+    clip-path: inset(0 0 0 0%);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes reward-wipe-sweep {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+@keyframes reward-wipe-idle-shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  40%,
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    display: none;
+  }
+
+  .coverWiping {
+    animation: none;
+    clip-path: inset(0 0 0 100%);
+  }
+}

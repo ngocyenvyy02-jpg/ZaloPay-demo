@@ -1,0 +1,91 @@
+/* Toggle / switch (Figma "Toggle", node 560:37695). Pill track + sliding white
+   knob. Geometry per size (read from Figma):
+     M: track 40×24, knob 20, padding 2, travel 16
+     S: track 32×20, knob 16, padding 2, travel 12
+   Track on = primary-blue (#0033C9); off = variant-dark-100 (#CCD2D8); knob
+   white with the design's drop shadow. Only transform/background animate.
+   Base row/input/label come from ../shared/formControl.module.css. */
+
+.root {
+  composes: root from "../shared/formControl.module.css";
+}
+
+.input {
+  composes: input from "../shared/formControl.module.css";
+}
+
+.label {
+  composes: label from "../shared/formControl.module.css";
+}
+
+/* ---- Track: full pill, off state (grey) ---- */
+.track {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--color-variant-dark-100, #ccd2d8);
+  transition: background var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Knob: white circle, sits at the left (off); slides right when on ---- */
+.knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background: var(--color-primary-white, #fff);
+  transition: transform var(--motion-duration-fast, 200ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Size M (40×24, knob 20, travel 16) ---- */
+.sizeM {
+  width: 40px;
+  height: 24px;
+}
+.sizeM .knob {
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+}
+.input:checked + .sizeM .knob {
+  transform: translateX(16px);
+}
+
+/* ---- Size S (32×20, knob 16, travel 12) ---- */
+.sizeS {
+  width: 32px;
+  height: 20px;
+}
+.sizeS .knob {
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 2.4px 6.4px rgba(0, 0, 0, 0.15), 0 2.4px 0.8px rgba(0, 0, 0, 0.06);
+}
+.input:checked + .sizeS .knob {
+  transform: translateX(12px);
+}
+
+/* ---- On: track turns blue ---- */
+.input:checked + .track {
+  background: var(--color-primary-blue, #0033c9);
+}
+
+/* ---- Pressed feedback (template convention) ---- */
+.root:not(.disabled):active .track {
+  transform: scale(0.99);
+  transition: transform var(--motion-duration-instant, 100ms)
+    var(--motion-ease-out, cubic-bezier(0.04, 0.62, 0.23, 0.98));
+}
+
+/* ---- Disabled: dim + no interaction ---- */
+.disabled {
+  cursor: default;
+}
+.disabled .track {
+  opacity: 0.5;
+}
+.disabled .label {
+  opacity: 0.6;
+}
