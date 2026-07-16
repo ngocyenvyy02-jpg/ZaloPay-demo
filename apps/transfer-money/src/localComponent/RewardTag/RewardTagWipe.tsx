@@ -26,7 +26,6 @@ const WIPE_MS = 600;
 export function RewardTagWipe({
   state,
   reward,
-  merchantLabel,
   onTap,
   onRevealComplete,
   reducedMotion,
@@ -64,7 +63,9 @@ export function RewardTagWipe({
         className={`${styles.cover} ${revealing ? styles.coverWiping : ""}`}
         aria-hidden="true"
       >
-        <span className={styles.coverText}>Bạn có phần quà đang chờ. Cào ngay</span>
+        <span className={styles.coverText}>
+          Bạn có quà cho lần đầu quét mã. Chạm để mở
+        </span>
         <GiftIcon className={styles.coverGift} />
         {!revealing && <span className={styles.shimmer} />}
       </div>
@@ -77,7 +78,7 @@ export function RewardTagWipe({
         type="button"
         className={styles.root}
         onClick={onTap}
-        aria-label={`Bạn có phần quà đang chờ, cào để mở khi quét mã ${merchantLabel}`}
+        aria-label="Bạn có quà cho lần đầu quét mã. Chạm để mở"
       >
         {inner}
       </button>

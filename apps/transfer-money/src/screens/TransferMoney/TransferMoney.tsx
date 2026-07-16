@@ -58,12 +58,16 @@ export function TransferMoney({
   const [merchant, setMerchant] = useState<Merchant>("BHX");
   const [revealState, setRevealState] = useState<RevealState>("S0");
   const [flowStep, setFlowStep] = useState<"payment" | "success">("payment");
+  // Bumped on every reset so the tag remounts — this is what re-runs Option 4's
+  // auto count-up on Replay (it has no S0/tap to re-trigger it).
+  const [replayNonce, setReplayNonce] = useState(0);
 
   const reward = REWARD_BY_SEGMENT[segment];
 
   const resetReveal = () => {
     setRevealState("S0");
     setFlowStep("payment");
+    setReplayNonce((n) => n + 1);
   };
 
   const handleTap = () => {
@@ -143,6 +147,7 @@ export function TransferMoney({
 
             <div className={styles.rewardSlot}>
               <RewardTag
+                key={replayNonce}
                 option={option}
                 state={revealState}
                 reward={reward}

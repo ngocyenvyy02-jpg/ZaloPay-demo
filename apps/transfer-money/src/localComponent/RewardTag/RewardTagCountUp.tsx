@@ -50,10 +50,12 @@ export function RewardTagCountUp({
         type="button"
         className={`${styles.root} ${styles.s0}`}
         onClick={onTap}
-        aria-label="Có phần quà đang chờ bạn. Chạm để mở"
+        aria-label="Bạn có quà cho lần đầu quét mã. Chạm để mở"
       >
         <GiftIcon className={styles.giftIcon} aria-hidden="true" />
-        <span className={styles.label}>Có phần quà đang chờ bạn. Chạm để mở</span>
+        <span className={styles.label}>
+          Bạn có quà cho lần đầu quét mã. Chạm để mở
+        </span>
       </button>
     );
   }

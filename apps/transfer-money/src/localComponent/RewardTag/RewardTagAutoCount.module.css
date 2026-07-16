@@ -1,0 +1,68 @@
+/* Option 4 — always-visible reward tag (Figma 2025:572). Pale #fff6d3 pill,
+   text + coin centered, amount bold 16px; no cover/tap. Colors from the Figma:
+   bg #fff6d3 (= orange-50), text #cc7100 (= orange-600). */
+.root {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s, 4px);
+  padding: var(--space-md, 8px) var(--space-lg, 12px);
+  border-radius: var(--radius-circle, 10000px);
+  background: var(--color-variant-orange-50, #fff6d3);
+  color: var(--color-variant-orange-600, #cc7100);
+}
+
+.line {
+  min-width: 0;
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* The amount reads a touch larger + bold, per the Figma. */
+.amount {
+  font-size: var(--font-size-lg, 16px);
+  font-weight: var(--font-weight-bold, 700);
+  line-height: var(--line-height-xl, 20px);
+  color: var(--color-variant-orange-600, #cc7100);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.coin {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  transform-origin: center;
+}
+
+/* Coin bounces once when the count-up lands. */
+.landed .coin {
+  animation: reward-autocount-coin-pop 480ms var(--motion-ease-out) both;
+}
+
+@keyframes reward-autocount-coin-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35) rotate(12deg);
+  }
+  65% {
+    transform: scale(0.9) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landed .coin {
+    animation: none;
+  }
+}

@@ -12,7 +12,7 @@ export interface DemoControlPanelProps {
   onReplay: () => void;
 }
 
-const OPTIONS: OptionId[] = [1, 2, 3];
+const OPTIONS: OptionId[] = [1, 2, 3, 4];
 const SEGMENTS: SegmentId[] = ["N", "F", "R"];
 const MERCHANTS: Merchant[] = ["BHX", "WINMART"];
 const MERCHANT_SHORT: Record<Merchant, string> = { BHX: "BHX", WINMART: "WM" };

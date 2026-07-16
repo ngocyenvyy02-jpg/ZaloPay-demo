@@ -1,4 +1,4 @@
-export type OptionId = 1 | 2 | 3;
+export type OptionId = 1 | 2 | 3 | 4;
 export type SegmentId = "N" | "F" | "R";
 export type Merchant = "BHX" | "WINMART";
 /** No S1: tap goes straight to S2, where the count-up + reveal animation play. */
