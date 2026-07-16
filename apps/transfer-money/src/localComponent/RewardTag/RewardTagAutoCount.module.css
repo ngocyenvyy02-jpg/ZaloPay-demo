@@ -1,4 +1,4 @@
-/* Option 4 — always-visible reward tag (Figma 2025:572). Pale #fff6d3 pill,
+/* Option 1 — always-visible reward tag (Figma 2025:572). Pale #fff6d3 pill,
    text + coin centered, amount bold 16px; no cover/tap. Colors from the Figma:
    bg #fff6d3 (= orange-50), text #cc7100 (= orange-600). */
 .root {
@@ -13,6 +13,17 @@
   border-radius: var(--radius-circle, 10000px);
   background: var(--color-variant-orange-50, #fff6d3);
   color: var(--color-variant-orange-600, #cc7100);
+  /* Hidden through the ~1s "load" beat, then fades in gradually as the count
+     runs — opacity ramps evenly 0→100% over the full count (linear), so the
+     reward "materialises" and lands fully opaque right as the number settles.
+     Opacity only (no transform) so it stays smooth while the number counts. */
+  opacity: 0;
+  transition: opacity 900ms linear;
+}
+
+/* Fade-in the moment the count begins. */
+.entered {
+  opacity: 1;
 }
 
 .line {
@@ -62,6 +73,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .root {
+    opacity: 1;
+    transition: none;
+  }
+
   .landed .coin {
     animation: none;
   }

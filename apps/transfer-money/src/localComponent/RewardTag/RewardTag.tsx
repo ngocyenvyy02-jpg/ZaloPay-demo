@@ -15,10 +15,10 @@ export interface RewardTagProps {
 }
 
 /**
- * Dispatches to the reveal interaction for the selected option (brief §6).
- * Options 1–3 run S0 → S2 (no S1): each owns its resting invite (S0) and its
- * reveal-into-settled S2 — count-up (1), gift-box open (2), scratch wipe (3).
- * Option 4 has no S0/tap at all: the reward is shown and counts up on entry.
+ * Dispatches to the reveal interaction for the selected option.
+ * Option 1 has no S0/tap at all: the reward is shown and counts up on entry.
+ * Options 2–4 run S0 → S2 (no S1): each owns its resting invite (S0) and its
+ * reveal-into-settled S2 — count-up (2), gift-box open (3), scratch wipe (4).
  */
 export function RewardTag({
   option,
@@ -30,6 +30,17 @@ export function RewardTag({
   reducedMotion,
 }: RewardTagProps) {
   if (option === 1) {
+    // No S0, no tap — the reward shows and counts up on entry.
+    return (
+      <RewardTagAutoCount
+        reward={reward}
+        onRevealComplete={onRevealComplete}
+        reducedMotion={reducedMotion}
+      />
+    );
+  }
+
+  if (option === 2) {
     return (
       <RewardTagCountUp
         state={state}
@@ -41,23 +52,12 @@ export function RewardTag({
     );
   }
 
-  if (option === 2) {
+  if (option === 3) {
     return (
       <RewardTagGiftBox
         state={state}
         reward={reward}
         onTap={onTap}
-        onRevealComplete={onRevealComplete}
-        reducedMotion={reducedMotion}
-      />
-    );
-  }
-
-  if (option === 4) {
-    // No S0, no tap — the reward shows and counts up on entry.
-    return (
-      <RewardTagAutoCount
-        reward={reward}
         onRevealComplete={onRevealComplete}
         reducedMotion={reducedMotion}
       />

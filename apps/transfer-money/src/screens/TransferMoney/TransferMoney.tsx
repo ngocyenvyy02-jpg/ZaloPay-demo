@@ -53,7 +53,7 @@ export function TransferMoney({
 }: TransferMoneyProps) {
   const reducedMotion = usePrefersReducedMotion();
   const [saveAccount, setSaveAccount] = useState(false);
-  const [option, setOption] = useState<OptionId>(3);
+  const [option, setOption] = useState<OptionId>(1);
   const [segment, setSegment] = useState<SegmentId>("N");
   const [merchant, setMerchant] = useState<Merchant>("BHX");
   const [revealState, setRevealState] = useState<RevealState>("S0");

@@ -14,7 +14,7 @@ const DELAY_MS = 1000;
 const COUNT_MS = 900;
 
 /**
- * Option 4 (Figma 2025:572) — no cover, no tap. The reward is visible the
+ * Option 1 (Figma 2025:572) — no cover, no tap. The reward is visible the
  * moment the screen loads. It holds at +0 for ~1s first (mirrors the real QR
  * scan → the device loading the page/amount/note before the reward populates),
  * then the amount counts 0→reward. There is no S0 here: the tag renders its
@@ -51,7 +51,7 @@ export function RewardTagAutoCount({
 
   return (
     <div
-      className={`${styles.root} ${landed ? styles.landed : ""}`}
+      className={`${styles.root} ${started ? styles.entered : ""} ${landed ? styles.landed : ""}`}
       aria-live="polite"
     >
       <span className={styles.line}>
