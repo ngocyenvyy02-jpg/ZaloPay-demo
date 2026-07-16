@@ -1,7 +1,6 @@
 import type { OptionId, RevealState } from "./types";
-import { RewardTagS2Default } from "./RewardTagS2Default";
 import { RewardTagCountUp } from "./RewardTagCountUp";
-import { RewardTagSpringPill } from "./RewardTagSpringPill";
+import { RewardTagGiftBox } from "./RewardTagGiftBox";
 import { RewardTagWipe } from "./RewardTagWipe";
 
 export interface RewardTagProps {
@@ -16,10 +15,9 @@ export interface RewardTagProps {
 
 /**
  * Dispatches to the reveal interaction for the selected option (brief §6).
- * Each option owns its OWN resting state (S0) so the three read differently
- * before any tap: option 1 = value-forward count-up, option 2 = two-step
- * progress, option 3 = scratch-card foil. Option 1 and 2 keep their own shell
- * through S2; option 3 hands off to RewardTagS2Default.
+ * State machine is just S0 → S2 (no S1): each option owns both its resting
+ * invite (S0) and its reveal-into-settled S2, where the count-up + its
+ * signature motion play — count-up (1), gift-box open (2), scratch wipe (3).
  */
 export function RewardTag({
   option,
@@ -44,7 +42,7 @@ export function RewardTag({
 
   if (option === 2) {
     return (
-      <RewardTagSpringPill
+      <RewardTagGiftBox
         state={state}
         reward={reward}
         onTap={onTap}
@@ -54,8 +52,6 @@ export function RewardTag({
     );
   }
 
-  // option 3 — scratch card
-  if (state === "S2") return <RewardTagS2Default reward={reward} />;
   return (
     <RewardTagWipe
       state={state}

@@ -8,6 +8,7 @@
   overflow: hidden;
   border-radius: var(--app-radius);
 }
+
 /* Empty screen frame — the base layer new screens are built into. */
 .screen {
   position: absolute;
@@ -31,3 +32,4 @@
      transition it so the color change syncs with the screen transition. */
   transition: background var(--motion-duration-normal) var(--motion-ease-out);
 }
+

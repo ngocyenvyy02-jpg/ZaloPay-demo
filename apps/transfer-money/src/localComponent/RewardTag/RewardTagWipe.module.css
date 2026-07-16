@@ -1,7 +1,8 @@
 .root {
   position: relative;
+  width: fit-content;
   min-width: 152px;
-  max-width: calc(100% - 16px);
+  max-width: calc(100% - 8px);
   box-sizing: border-box;
   padding: 0;
   border: 0;
@@ -19,38 +20,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-s, 4px);
-  padding: var(--space-md, 8px) var(--space-lg, 12px);
-  border: 0;
+  padding: var(--space-md, 8px);
   background: var(--color-variant-orange-50, #fff6d3);
   color: var(--color-variant-orange-600, #cc7100);
+}
+
+.revealedText {
   font-size: var(--font-size-md, 14px);
   font-weight: var(--font-weight-regular, 400);
   line-height: var(--line-height-lg, 18px);
   white-space: nowrap;
+  text-align: center;
 }
 
-.revealedText {
-  font-weight: var(--font-weight-regular, 400);
-}
-
-.count {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-s, 4px);
-  color: var(--color-variant-orange-600, #cc7100);
+.amount {
   font-weight: var(--font-weight-bold, 700);
+  color: var(--color-variant-orange-600, #cc7100);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.giftIcon,
+.coinIcon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  transform-origin: center;
+}
+
+/* Coin bounces once when the count-up lands. */
+.landed .coinIcon {
+  animation: reward-coin-pop 480ms var(--motion-ease-out) both;
+}
+
 .coverGift {
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
+  position: relative;
+  z-index: 1;
 }
 
-.giftIcon [fill]:not([fill="none"]),
 .coverGift [fill]:not([fill="none"]) {
   fill: currentColor;
 }
@@ -83,15 +93,10 @@
 }
 
 .coverText {
-  font-size: 13px;
+  font-size: var(--font-size-md, 14px);
   font-weight: var(--font-weight-bold, 700);
   letter-spacing: 0.01em;
   white-space: nowrap;
-  z-index: 1;
-}
-
-.coverGift {
-  position: relative;
   z-index: 1;
 }
 
@@ -116,25 +121,12 @@
   animation: reward-wipe-reveal 600ms var(--motion-ease-standard) forwards;
 }
 
-.coverWiping .shimmer {
-  animation: reward-wipe-sweep 600ms var(--motion-ease-standard) forwards;
-}
-
 @keyframes reward-wipe-reveal {
   from {
     clip-path: inset(0 0 0 0%);
   }
   to {
     clip-path: inset(0 0 0 100%);
-  }
-}
-
-@keyframes reward-wipe-sweep {
-  from {
-    transform: translateX(-120%);
-  }
-  to {
-    transform: translateX(320%);
   }
 }
 
@@ -148,6 +140,21 @@
   }
 }
 
+@keyframes reward-coin-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35) rotate(12deg);
+  }
+  65% {
+    transform: scale(0.9) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .shimmer {
     animation: none;
@@ -157,5 +164,9 @@
   .coverWiping {
     animation: none;
     clip-path: inset(0 0 0 100%);
+  }
+
+  .landed .coinIcon {
+    animation: none;
   }
 }

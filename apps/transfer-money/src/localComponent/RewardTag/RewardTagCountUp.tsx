@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CoinIcon from "../../../../../zlp-icons/Second/service_coin.svg?react";
 import GiftIcon from "../../../../../zlp-icons/Second/general_gift.svg?react";
-import GiftOpenIcon from "../../../../../zlp-icons/Second/general_giftopen.svg?react";
 import { useCountUp } from "./useCountUp";
 import { formatReward } from "./types";
 import type { RevealState } from "./types";
@@ -18,8 +17,9 @@ export interface RewardTagCountUpProps {
 const REVEAL_MS = 400;
 
 /**
- * Option 1 (brief §6) — value-forward. The reward is visually dominant from
- * S0, counts 0→reward in S1, then remains the focal point in S2.
+ * Option 1 (brief §6) — value-forward. Tap jumps straight to S2, where the
+ * amount counts 0→reward inside the "you'll receive X after paying" line; the
+ * coin pops once the number lands.
  */
 export function RewardTagCountUp({
   state,
@@ -28,15 +28,21 @@ export function RewardTagCountUp({
   onRevealComplete,
   reducedMotion,
 }: RewardTagCountUpProps) {
-  const revealing = state === "S1";
   const duration = reducedMotion ? 0 : REVEAL_MS;
-  const count = useCountUp(reward, duration, state !== "S0", reducedMotion);
+  const count = useCountUp(reward, duration, state === "S2", reducedMotion);
+  const [landed, setLanded] = useState(false);
 
   useEffect(() => {
-    if (!revealing) return;
-    const timer = setTimeout(onRevealComplete, duration);
+    if (state !== "S2") {
+      setLanded(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setLanded(true);
+      onRevealComplete();
+    }, duration);
     return () => clearTimeout(timer);
-  }, [revealing, duration, onRevealComplete]);
+  }, [state, duration, onRevealComplete]);
 
   if (state === "S0") {
     return (
@@ -44,29 +50,23 @@ export function RewardTagCountUp({
         type="button"
         className={`${styles.root} ${styles.s0}`}
         onClick={onTap}
-        aria-label="Chạm để mở quà lần đầu tiên"
+        aria-label="Có phần quà đang chờ bạn. Chạm để mở"
       >
         <GiftIcon className={styles.giftIcon} aria-hidden="true" />
-        <span className={styles.label}>Chạm để mở quà lần đầu tiên</span>
+        <span className={styles.label}>Có phần quà đang chờ bạn. Chạm để mở</span>
       </button>
     );
   }
 
   return (
     <div
-      className={`${styles.root} ${revealing ? styles.s1 : ""}`}
+      className={`${styles.root} ${styles.s2} ${landed ? styles.landed : ""}`}
       aria-live="polite"
     >
-      <GiftOpenIcon
-        className={`${styles.giftIcon} ${styles.giftIconOpen}`}
-        aria-hidden="true"
-      />
-      <span className={styles.label}>
-        {revealing ? "Đang mở quà ·" : "Thanh toán để nhận"}
-      </span>
-      <span className={styles.count}>
-        {formatReward(count)}
-        <CoinIcon className={styles.coinIcon} aria-label="xu" />
+      <span className={styles.s2Line}>
+        Yeah! Bạn sẽ nhận được{" "}
+        <strong className={styles.s2Amount}>{formatReward(count)}</strong>
+        <CoinIcon className={styles.coinIcon} aria-label="xu" /> sau khi thanh toán
       </span>
     </div>
   );

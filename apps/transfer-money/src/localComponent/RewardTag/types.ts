@@ -1,7 +1,8 @@
 export type OptionId = 1 | 2 | 3;
 export type SegmentId = "N" | "F" | "R";
 export type Merchant = "BHX" | "WINMART";
-export type RevealState = "S0" | "S1" | "S2";
+/** No S1: tap goes straight to S2, where the count-up + reveal animation play. */
+export type RevealState = "S0" | "S2";
 
 /** Brief §4 — reward per user segment (coins, not the payment amount). */
 export const REWARD_BY_SEGMENT: Record<SegmentId, number> = {

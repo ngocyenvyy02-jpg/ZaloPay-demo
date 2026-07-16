@@ -1,14 +1,14 @@
 .root {
   position: relative;
-  width: max-content;
-  max-width: calc(100% - 32px);
+  width: fit-content;
+  max-width: calc(100% - 8px);
   min-height: 40px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-md, 8px);
-  padding: var(--space-md, 8px) var(--space-lg, 12px);
+  padding: var(--space-md, 8px);
   border: 0;
   border-radius: var(--radius-circle, 10000px);
   background: var(--color-variant-orange-50, #fff6d3);
@@ -27,7 +27,7 @@
   transform: scale(0.99);
 }
 
-.s1 {
+.s2 {
   animation: reward-countup-reveal var(--motion-duration-slow, 400ms)
     var(--motion-ease-out) both;
 }
@@ -43,11 +43,6 @@
   fill: currentColor;
 }
 
-.giftIconOpen {
-  animation: reward-countup-icon-open var(--motion-duration-slow, 400ms)
-    var(--motion-ease-enter) both;
-}
-
 .label {
   min-width: 0;
   overflow: hidden;
@@ -59,22 +54,33 @@
   white-space: nowrap;
 }
 
-.count {
-  display: flex;
-  align-items: center;
-  gap: var(--space-s, 4px);
-  color: var(--color-variant-orange-600, #cc7100);
-  font-size: 18px; /* Value-forward emphasis; no matching font-size token. */
+.s2Line {
+  color: inherit;
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.s2Amount {
   font-weight: var(--font-weight-bold, 700);
-  line-height: 24px; /* Paired with the exact 18px value size. */
+  color: var(--color-variant-orange-600, #cc7100);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .coinIcon {
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  transform-origin: center;
+}
+
+/* Coin bounces once when the count-up lands (state stays S2). */
+.landed .coinIcon {
+  animation: reward-coin-pop 480ms var(--motion-ease-out) both;
 }
 
 @keyframes reward-countup-s0-enter {
@@ -99,9 +105,15 @@
   }
 }
 
-@keyframes reward-countup-icon-open {
+@keyframes reward-coin-pop {
   0% {
-    transform: scale(0.8) rotate(-6deg);
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.35) rotate(12deg);
+  }
+  65% {
+    transform: scale(0.9) rotate(-4deg);
   }
   100% {
     transform: scale(1) rotate(0);
@@ -110,11 +122,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .s0,
-  .s1 {
+  .s2 {
     animation: none;
   }
 
-  .giftIconOpen {
+  .landed .coinIcon {
     animation: none;
   }
 }

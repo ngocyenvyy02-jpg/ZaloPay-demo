@@ -2,11 +2,12 @@
 // zlp-icons (svgr, note the baked-fill tint trap):
 //   import FooIcon from "../../../../../zlp-icons/Second/foo.svg?react";
 // App assets (sibling of src/): import bar from "../../../assets/bar.png";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   AmountDisplay,
   Button,
   NavigationBar,
+  playHapticRigid,
   playHapticSelection,
   Toggle,
 } from "@zlp/design-system";
@@ -66,10 +67,16 @@ export function TransferMoney({
   };
 
   const handleTap = () => {
+    // No S1 — jump straight to S2; the count-up + reveal animation play there.
     playHapticSelection();
-    setRevealState("S1");
+    setRevealState("S2");
   };
-  const handleRevealComplete = () => setRevealState("S2");
+  // Crisp "landed" tick when the number settles — reinforces the reveal payoff
+  // without a completion signal (guardrail 1: still one step left at S2).
+  // useCallback keeps identity stable so the reveal-timer effects don't re-fire.
+  const handleRevealComplete = useCallback(() => {
+    playHapticRigid();
+  }, []);
 
   const handleOptionChange = (next: OptionId) => {
     setOption(next);
