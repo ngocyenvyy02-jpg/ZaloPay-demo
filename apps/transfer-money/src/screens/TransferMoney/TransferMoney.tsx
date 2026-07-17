@@ -2,7 +2,7 @@
 // zlp-icons (svgr, note the baked-fill tint trap):
 //   import FooIcon from "../../../../../zlp-icons/Second/foo.svg?react";
 // App assets (sibling of src/): import bar from "../../../assets/bar.png";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   AmountDisplay,
   Button,
@@ -12,13 +12,22 @@ import {
   Toggle,
 } from "@zlp/design-system";
 import CloseCircleIcon from "../../../../../zlp-icons/Second/general_closecircle_solid.svg?react";
+import CoinIcon from "../../../../../zlp-icons/Second/service_coin.svg?react";
 import scanIcon from "../../../assets/scan-icon.svg";
 import vietcombankLogo from "../../../assets/vietcombank-logo.svg";
 import zlpCoin from "../../../assets/zlp-coin.svg";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
+import { CoinFly } from "../../localComponent/CoinFly";
+import type { Point } from "../../localComponent/CoinFly";
 import { DemoControlPanel } from "../../localComponent/DemoControlPanel";
-import { MERCHANT_LABEL, REWARD_BY_SEGMENT, RewardTag } from "../../localComponent/RewardTag";
+import {
+  formatReward,
+  MERCHANT_LABEL,
+  REWARD_BY_SEGMENT,
+  RewardTag,
+} from "../../localComponent/RewardTag";
 import type {
+  BadgeSkin,
   Merchant,
   OptionId,
   RevealState,
@@ -56,11 +65,18 @@ export function TransferMoney({
   const [option, setOption] = useState<OptionId>(1);
   const [segment, setSegment] = useState<SegmentId>("N");
   const [merchant, setMerchant] = useState<Merchant>("BHX");
+  const [badgeSkin, setBadgeSkin] = useState<BadgeSkin>("soft");
   const [revealState, setRevealState] = useState<RevealState>("S0");
   const [flowStep, setFlowStep] = useState<"payment" | "success">("payment");
-  // Bumped on every reset so the tag remounts — this is what re-runs Option 4's
-  // auto count-up on Replay (it has no S0/tap to re-trigger it).
+  // Bumped on every reset so the tag remounts (re-runs an option's reveal).
   const [replayNonce, setReplayNonce] = useState(0);
+  // Option 1 hands the reward off to the CTA: when the count lands, coins fly
+  // from the tag onto "Tiếp tục", which then lights up (label + a short pulse).
+  const rootRef = useRef<HTMLDivElement>(null);
+  const rewardSlotRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+  const [rewardClaimed, setRewardClaimed] = useState(false);
+  const [fly, setFly] = useState<{ from: Point; to: Point } | null>(null);
 
   const reward = REWARD_BY_SEGMENT[segment];
 
@@ -68,6 +84,8 @@ export function TransferMoney({
     setRevealState("S0");
     setFlowStep("payment");
     setReplayNonce((n) => n + 1);
+    setRewardClaimed(false);
+    setFly(null);
   };
 
   const handleTap = () => {
@@ -80,6 +98,28 @@ export function TransferMoney({
   // useCallback keeps identity stable so the reveal-timer effects don't re-fire.
   const handleRevealComplete = useCallback(() => {
     playHapticRigid();
+    if (option !== 1) return;
+    // Option 1: fling the coins from the tag down onto the CTA. Reduced motion
+    // (or a missing ref) skips the flight and just lights up the CTA.
+    const root = rootRef.current;
+    const slot = rewardSlotRef.current;
+    const cta = ctaRef.current;
+    if (reducedMotion || !root || !slot || !cta) {
+      setRewardClaimed(true);
+      return;
+    }
+    const r = root.getBoundingClientRect();
+    const s = slot.getBoundingClientRect();
+    const c = cta.getBoundingClientRect();
+    setFly({
+      from: { x: s.left + s.width / 2 - r.left, y: s.top + s.height / 2 - r.top },
+      to: { x: c.left + c.width / 2 - r.left, y: c.top + c.height / 2 - r.top },
+    });
+  }, [option, reducedMotion]);
+
+  const handleFlyDone = useCallback(() => {
+    setFly(null);
+    setRewardClaimed(true);
   }, []);
 
   const handleOptionChange = (next: OptionId) => {
@@ -117,7 +157,7 @@ export function TransferMoney({
   }
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} ref={rootRef}>
       <div className={styles.scroll}>
         <NavigationBar showBack={false} className={styles.navigation} />
 
@@ -145,7 +185,7 @@ export function TransferMoney({
               />
             </div>
 
-            <div className={styles.rewardSlot}>
+            <div className={styles.rewardSlot} ref={rewardSlotRef}>
               <RewardTag
                 key={replayNonce}
                 option={option}
@@ -155,6 +195,7 @@ export function TransferMoney({
                 onTap={handleTap}
                 onRevealComplete={handleRevealComplete}
                 reducedMotion={reducedMotion}
+                badgeSkin={badgeSkin}
               />
             </div>
           </section>
@@ -193,19 +234,40 @@ export function TransferMoney({
           </section>
 
           <div className={styles.buttonSection}>
-            <Button
-              version="2.0"
-              size="48"
-              fullWidth
-              onClick={handleContinue}
+            <div
+              ref={ctaRef}
+              className={`${styles.ctaWrap} ${rewardClaimed ? styles.ctaClaimed : ""}`}
             >
-              Tiếp tục
-            </Button>
+              <Button
+                version="2.0"
+                size="48"
+                fullWidth
+                onClick={handleContinue}
+                iconRight={
+                  rewardClaimed ? (
+                    <CoinIcon className={styles.ctaCoin} aria-hidden="true" />
+                  ) : undefined
+                }
+              >
+                {rewardClaimed
+                  ? `Tiếp tục để nhận +${formatReward(reward)}`
+                  : "Tiếp tục"}
+              </Button>
+            </div>
           </div>
 
           <div className={styles.keyboardSpace} aria-hidden="true" />
         </main>
       </div>
+
+      {fly && (
+        <CoinFly
+          from={fly.from}
+          to={fly.to}
+          reducedMotion={reducedMotion}
+          onDone={handleFlyDone}
+        />
+      )}
 
       <DemoControlPanel
         option={option}
@@ -214,6 +276,8 @@ export function TransferMoney({
         onSegmentChange={handleSegmentChange}
         merchant={merchant}
         onMerchantChange={handleMerchantChange}
+        badgeSkin={badgeSkin}
+        onBadgeSkinChange={setBadgeSkin}
         onReplay={resetReveal}
       />
     </div>

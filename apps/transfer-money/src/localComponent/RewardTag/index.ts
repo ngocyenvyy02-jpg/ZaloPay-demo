@@ -5,4 +5,4 @@ export {
   MERCHANT_LABEL,
   formatReward,
 } from "./types";
-export type { OptionId, SegmentId, Merchant, RevealState } from "./types";
+export type { OptionId, SegmentId, Merchant, RevealState, BadgeSkin } from "./types";

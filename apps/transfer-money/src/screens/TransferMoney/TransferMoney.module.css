@@ -235,6 +235,37 @@
   padding: var(--space-md, 8px) 24px var(--space-s, 4px); /* 24px is exact Figma; no token. */
 }
 
+.ctaWrap {
+  transform-origin: center;
+}
+
+/* When the flown coins land on the CTA it pulses 2–3 times, then rests —
+   pulling the user to tap Tiếp tục (complete payment → receive the coins). */
+.ctaClaimed {
+  animation: cta-pulse 560ms var(--motion-ease-standard) 3;
+}
+
+.ctaCoin {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaClaimed {
+    animation: none;
+  }
+}
+
 .keyboardSpace {
   flex: 0 1 272px; /* Reserves the hidden keypad region shown by this Figma state. */
   min-height: 0;

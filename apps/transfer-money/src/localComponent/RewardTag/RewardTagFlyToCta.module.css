@@ -1,0 +1,91 @@
+/* Option 1 — reward + hand-off to CTA. Pale #fff6d3 pill (= orange-50), text
+   #cc7100 (= orange-600). S0 is tappable; on tap it fades to the settle line and
+   the host flies the coins onto the CTA. The pill hugs its text (fit-content). */
+.root {
+  position: relative;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: calc(100% - 8px);
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s, 4px);
+  padding: var(--space-md, 8px) var(--space-lg, 12px);
+  border: 0;
+  border-radius: var(--radius-circle, 10000px);
+  background: var(--color-variant-orange-50, #fff6d3);
+  color: var(--color-variant-orange-600, #cc7100);
+  font-family: inherit;
+  /* S0 and S2 each fade in on mount → a smooth S0→S2 crossfade on tap. */
+  animation: flycta-fade-in 220ms var(--motion-ease-out) both;
+}
+
+.s0 {
+  cursor: pointer;
+}
+
+.s0:active {
+  transform: scale(0.99);
+}
+
+/* ── S0 colour treatments to compare (default "soft" = base .root) ────────── */
+/* Deeper gold + hairline border — reads more "there's a gift here, tap me". */
+.bold {
+  background: var(--color-variant-orange-100, #ffeaa5);
+  border: 1px solid rgba(204, 113, 0, 0.28);
+}
+
+/* Warm gradient + hairline border — a touch premium. */
+.gradient {
+  background: linear-gradient(180deg, #fff6d3 0%, #ffe3a0 100%);
+  border: 1px solid rgba(204, 113, 0, 0.28);
+}
+
+.line {
+  min-width: 0;
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.amount {
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-variant-orange-600, #cc7100);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.coin {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  transform-origin: center;
+}
+
+/* After the coins fly off, the tag settles to the still-one-step reminder. */
+.settle {
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-regular, 400);
+  line-height: var(--line-height-lg, 18px);
+  white-space: nowrap;
+  text-align: center;
+}
+
+@keyframes flycta-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    animation: none;
+  }
+}

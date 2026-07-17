@@ -1,5 +1,5 @@
 import RefreshIcon from "../../../../../zlp-icons/Second/general_refresh.svg?react";
-import type { Merchant, OptionId, SegmentId } from "../RewardTag";
+import type { BadgeSkin, Merchant, OptionId, SegmentId } from "../RewardTag";
 import styles from "./DemoControlPanel.module.css";
 
 export interface DemoControlPanelProps {
@@ -9,6 +9,8 @@ export interface DemoControlPanelProps {
   onSegmentChange: (segment: SegmentId) => void;
   merchant: Merchant;
   onMerchantChange: (merchant: Merchant) => void;
+  badgeSkin: BadgeSkin;
+  onBadgeSkinChange: (skin: BadgeSkin) => void;
   onReplay: () => void;
 }
 
@@ -16,6 +18,12 @@ const OPTIONS: OptionId[] = [1, 2, 3, 4];
 const SEGMENTS: SegmentId[] = ["N", "F", "R"];
 const MERCHANTS: Merchant[] = ["BHX", "WINMART"];
 const MERCHANT_SHORT: Record<Merchant, string> = { BHX: "BHX", WINMART: "WM" };
+const SKINS: BadgeSkin[] = ["soft", "bold", "gradient"];
+const SKIN_SHORT: Record<BadgeSkin, string> = {
+  soft: "Nhạt",
+  bold: "Đậm",
+  gradient: "Grad",
+};
 
 /** Dev-only comparison tool (brief §9) — pick reveal option, segment, merchant; replay. */
 export function DemoControlPanel({
@@ -25,6 +33,8 @@ export function DemoControlPanel({
   onSegmentChange,
   merchant,
   onMerchantChange,
+  badgeSkin,
+  onBadgeSkinChange,
   onReplay,
 }: DemoControlPanelProps) {
   return (
@@ -72,6 +82,22 @@ export function DemoControlPanel({
               onClick={() => onMerchantChange(id)}
             >
               {MERCHANT_SHORT[id]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.group}>
+        <span className={styles.label}>Màu</span>
+        <div className={styles.seg}>
+          {SKINS.map((id) => (
+            <button
+              key={id}
+              type="button"
+              className={`${styles.segBtn} ${badgeSkin === id ? styles.segOn : ""}`}
+              onClick={() => onBadgeSkinChange(id)}
+            >
+              {SKIN_SHORT[id]}
             </button>
           ))}
         </div>

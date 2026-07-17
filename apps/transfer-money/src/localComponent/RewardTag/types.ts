@@ -1,6 +1,8 @@
 export type OptionId = 1 | 2 | 3 | 4;
 export type SegmentId = "N" | "F" | "R";
 export type Merchant = "BHX" | "WINMART";
+/** Badge colour treatment to compare (Option 1's S0 invite). */
+export type BadgeSkin = "soft" | "bold" | "gradient";
 /** No S1: tap goes straight to S2, where the count-up + reveal animation play. */
 export type RevealState = "S0" | "S2";
 
