@@ -1,10 +1,10 @@
 /* Option 1 — reward + hand-off to CTA. Pale #fff6d3 pill (= orange-50), text
-   #cc7100 (= orange-600). S0 is tappable; on tap it fades to the settle line and
-   the host flies the coins onto the CTA. The pill hugs its text (fit-content). */
+   #cc7100 (= orange-600). S0 is tappable; on tap the pill shrinks to the
+   settle line while the copy uses a Material-style fade-through. */
 .root {
   position: relative;
   box-sizing: border-box;
-  width: fit-content;
+  width: var(--reward-tag-width, fit-content);
   max-width: calc(100% - 8px);
   min-height: 36px;
   display: flex;
@@ -17,12 +17,22 @@
   background: var(--color-variant-orange-50, #fff6d3);
   color: var(--color-variant-orange-600, #cc7100);
   font-family: inherit;
-  /* S0 and S2 each fade in on mount → a smooth S0→S2 crossfade on tap. */
-  animation: flycta-fade-in 220ms var(--motion-ease-out) both;
+  overflow: hidden;
+  transition:
+    width 450ms var(--motion-ease-out),
+    transform 120ms var(--motion-ease-out);
 }
 
 .s0 {
   cursor: pointer;
+}
+
+.s2 {
+  cursor: default;
+}
+
+.root[aria-disabled="true"] {
+  pointer-events: none;
 }
 
 .s0:active {
@@ -42,6 +52,31 @@
   border: 1px solid rgba(204, 113, 0, 0.28);
 }
 
+.measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.copyStack {
+  min-width: 0;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
+}
+
+.copy {
+  grid-area: 1 / 1;
+  transform: translateY(6px) scale(0.99);
+  opacity: 0;
+  filter: blur(2px);
+  transition-property: transform, opacity, filter;
+  transition-duration: 420ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform, opacity, filter;
+}
+
 .line {
   min-width: 0;
   font-size: var(--font-size-md, 14px);
@@ -49,6 +84,29 @@
   line-height: var(--line-height-lg, 18px);
   white-space: nowrap;
   text-align: center;
+}
+
+.s0 .s0Copy,
+.s2 .s2Copy {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  filter: blur(0);
+}
+
+.s0 .s2Copy,
+.s2 .s0Copy {
+  transform: translateY(-4px) scale(1);
+  opacity: 0;
+  filter: blur(0);
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* Fade-through waits for the old copy to finish exiting, then leaves the
+   contract's 60ms micro-gap before the new copy enters. */
+.s2 .s2Copy,
+.s0 .s0Copy {
+  transition-delay: 320ms;
 }
 
 .amount {
@@ -75,17 +133,12 @@
   text-align: center;
 }
 
-@keyframes flycta-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .root {
-    animation: none;
+    transition: none;
+  }
+
+  .copy {
+    transition: none;
   }
 }

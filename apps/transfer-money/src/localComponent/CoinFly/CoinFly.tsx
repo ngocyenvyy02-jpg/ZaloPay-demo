@@ -13,13 +13,16 @@ export interface CoinFlyProps {
   /** Landing point — the "Tiếp tục" CTA centre (px, relative to the host root). */
   to: Point;
   reducedMotion: boolean;
-  /** Fired once the last coin lands, so the host can light up the CTA. */
+  /** Fired when the first coin completes its flight into the CTA. */
+  onFirstLand?: () => void;
+  /** Fired once the last coin lands, so the host can finish the hand-off. */
   onDone: () => void;
 }
 
 const COINS = 6;
 const FLY_MS = 700;
 const STAGGER_MS = 55;
+export const COIN_FLY_TOTAL_MS = FLY_MS + COINS * STAGGER_MS;
 
 /**
  * A short burst of gold coins that arcs from the reward tag down onto the
@@ -27,12 +30,22 @@ const STAGGER_MS = 55;
  * story (guardrail-safe: gold coins, not confetti/✓). Under reduced motion it
  * renders nothing and calls onDone immediately.
  */
-export function CoinFly({ from, to, reducedMotion, onDone }: CoinFlyProps) {
+export function CoinFly({
+  from,
+  to,
+  reducedMotion,
+  onFirstLand,
+  onDone,
+}: CoinFlyProps) {
   useEffect(() => {
-    const total = reducedMotion ? 0 : FLY_MS + COINS * STAGGER_MS;
+    const total = reducedMotion ? 0 : COIN_FLY_TOTAL_MS;
+    const firstLandTimer = setTimeout(() => onFirstLand?.(), reducedMotion ? 0 : FLY_MS);
     const timer = setTimeout(onDone, total);
-    return () => clearTimeout(timer);
-  }, [onDone, reducedMotion]);
+    return () => {
+      clearTimeout(firstLandTimer);
+      clearTimeout(timer);
+    };
+  }, [onDone, onFirstLand, reducedMotion]);
 
   if (reducedMotion) return null;
 

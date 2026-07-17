@@ -114,6 +114,22 @@
   margin-top: var(--space-lg, 12px);
 }
 
+/* The banner collapses symmetrically toward its centre. It reaches a circular
+   36px footprint first, then fades only during the final part of the shrink.
+   The outer slot stays full-width so coin-fly keeps a stable origin. */
+.rewardSlotShrinking {
+  pointer-events: none;
+}
+
+.rewardSlotShrinking > button {
+  width: 36px;
+  opacity: 0;
+  transition:
+    width 450ms var(--motion-ease-out),
+    opacity 90ms var(--motion-ease-out);
+  transition-delay: 0ms, 360ms;
+}
+
 .recipientSection {
   flex: 0 0 auto;
   display: flex;
@@ -239,10 +255,84 @@
   transform-origin: center;
 }
 
-/* When the flown coins land on the CTA it pulses 2–3 times, then rests —
-   pulling the user to tap Tiếp tục (complete payment → receive the coins). */
-.ctaClaimed {
-  animation: cta-pulse 560ms var(--motion-ease-standard) 3;
+/* The default CTA is a single centred label. Once the reward is revealed,
+   the old label exits left while the continuation phrase and live amount
+   settle into place from opposite sides. The motion follows the
+   animate-text short-slide-down contract, translated onto the x-axis. */
+.ctaText {
+  position: relative;
+  display: grid;
+  height: 20px;
+  min-width: max-content;
+  overflow: hidden;
+}
+
+.ctaTextState {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition:
+    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ctaTextDefault {
+  transform: translateX(0);
+  opacity: 1;
+  transition-duration: 320ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ctaTextReward {
+  gap: var(--space-lg, 12px);
+  transform: scale(0.992);
+  opacity: 0;
+  filter: blur(2.4px);
+}
+
+.ctaContinueText,
+.ctaAmountText {
+  transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ctaContinueText {
+  transform: translateX(24px);
+}
+
+.ctaAmountText {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-s, 4px);
+  transform: translateX(-24px);
+  opacity: 0;
+}
+
+.ctaRevealed .ctaTextDefault {
+  transform: translateX(-24px);
+  opacity: 0;
+}
+
+.ctaRevealed .ctaTextReward {
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+}
+
+.ctaRevealed .ctaContinueText {
+  transform: translateX(0);
+}
+
+.ctaRevealed .ctaAmountText {
+  transform: translateX(-24px);
+  opacity: 0;
+}
+
+.ctaCountVisible .ctaAmountText {
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .ctaCoin {
@@ -250,19 +340,11 @@
   height: 20px;
 }
 
-@keyframes cta-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.03);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .ctaClaimed {
-    animation: none;
+  .ctaTextState,
+  .ctaContinueText,
+  .ctaAmountText {
+    transition: none;
   }
 }
 

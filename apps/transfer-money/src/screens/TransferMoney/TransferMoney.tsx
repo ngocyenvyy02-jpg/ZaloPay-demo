@@ -33,6 +33,7 @@ import type {
   RevealState,
   SegmentId,
 } from "../../localComponent/RewardTag";
+import { useCountUp } from "../../localComponent/RewardTag/useCountUp";
 import { TransferSuccess } from "../TransferSuccess";
 import styles from "./TransferMoney.module.css";
 
@@ -50,6 +51,8 @@ const PROMO_CODE: Record<Merchant, string> = {
   BHX: "BHX_Q3_2026",
   WINMART: "WM_Q3_2026",
 };
+
+const CTA_COUNT_MS = 400;
 
 /**
  * "Tag nhận xu" interaction demo (brief-tag-interaction-demo.md) — one host
@@ -70,26 +73,34 @@ export function TransferMoney({
   const [flowStep, setFlowStep] = useState<"payment" | "success">("payment");
   // Bumped on every reset so the tag remounts (re-runs an option's reveal).
   const [replayNonce, setReplayNonce] = useState(0);
-  // Option 1 hands the reward off to the CTA: when the count lands, coins fly
-  // from the tag onto "Tiếp tục", which then lights up (label + a short pulse).
+  // Option 1 hands the reward off to the CTA: the label changes on tap, the
+  // count waits for the first coin to land, and the remaining coins follow.
   const rootRef = useRef<HTMLDivElement>(null);
   const rewardSlotRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  const [rewardClaimed, setRewardClaimed] = useState(false);
+  const [ctaCountActive, setCtaCountActive] = useState(false);
   const [fly, setFly] = useState<{ from: Point; to: Point } | null>(null);
 
   const reward = REWARD_BY_SEGMENT[segment];
+  const ctaRewardVisible = option === 1 && revealState === "S2";
+  const ctaCount = useCountUp(
+    reward,
+    CTA_COUNT_MS,
+    ctaCountActive,
+    reducedMotion,
+  );
 
   const resetReveal = () => {
     setRevealState("S0");
     setFlowStep("payment");
     setReplayNonce((n) => n + 1);
-    setRewardClaimed(false);
+    setCtaCountActive(false);
     setFly(null);
   };
 
   const handleTap = () => {
-    // No S1 — jump straight to S2; the count-up + reveal animation play there.
+    // No S1 — jump straight to S2; the CTA reveal starts there, while its
+    // amount waits for the first flying coin to land.
     playHapticSelection();
     setRevealState("S2");
   };
@@ -100,12 +111,12 @@ export function TransferMoney({
     playHapticRigid();
     if (option !== 1) return;
     // Option 1: fling the coins from the tag down onto the CTA. Reduced motion
-    // (or a missing ref) skips the flight and just lights up the CTA.
+    // (or a missing ref) skips the flight and snaps the amount to its target.
     const root = rootRef.current;
     const slot = rewardSlotRef.current;
     const cta = ctaRef.current;
     if (reducedMotion || !root || !slot || !cta) {
-      setRewardClaimed(true);
+      setCtaCountActive(true);
       return;
     }
     const r = root.getBoundingClientRect();
@@ -117,9 +128,12 @@ export function TransferMoney({
     });
   }, [option, reducedMotion]);
 
+  const handleFirstCoinLand = useCallback(() => {
+    setCtaCountActive(true);
+  }, []);
+
   const handleFlyDone = useCallback(() => {
     setFly(null);
-    setRewardClaimed(true);
   }, []);
 
   const handleOptionChange = (next: OptionId) => {
@@ -185,7 +199,11 @@ export function TransferMoney({
               />
             </div>
 
-            <div className={styles.rewardSlot} ref={rewardSlotRef}>
+            <div
+              className={`${styles.rewardSlot} ${option === 1 && revealState === "S2" ? styles.rewardSlotShrinking : ""}`}
+              ref={rewardSlotRef}
+              aria-hidden={option === 1 && revealState === "S2"}
+            >
               <RewardTag
                 key={replayNonce}
                 option={option}
@@ -236,22 +254,31 @@ export function TransferMoney({
           <div className={styles.buttonSection}>
             <div
               ref={ctaRef}
-              className={`${styles.ctaWrap} ${rewardClaimed ? styles.ctaClaimed : ""}`}
+              className={`${styles.ctaWrap} ${ctaCountActive ? styles.ctaRevealed : ""} ${ctaCountActive ? styles.ctaCountVisible : ""}`}
             >
               <Button
                 version="2.0"
                 size="48"
                 fullWidth
                 onClick={handleContinue}
-                iconRight={
-                  rewardClaimed ? (
-                    <CoinIcon className={styles.ctaCoin} aria-hidden="true" />
-                  ) : undefined
+                aria-label={
+                  ctaRewardVisible && ctaCountActive
+                    ? `Tiếp tục cộng ${formatReward(ctaCount)} xu`
+                    : "Tiếp tục"
                 }
               >
-                {rewardClaimed
-                  ? `Tiếp tục để nhận +${formatReward(reward)}`
-                  : "Tiếp tục"}
+                <span className={styles.ctaText} aria-hidden="true">
+                  <span className={`${styles.ctaTextState} ${styles.ctaTextDefault}`}>
+                    Tiếp tục
+                  </span>
+                  <span className={`${styles.ctaTextState} ${styles.ctaTextReward}`}>
+                    <span className={styles.ctaContinueText}>Tiếp tục</span>
+                    <span className={styles.ctaAmountText}>
+                      +{formatReward(ctaCount)}
+                      <CoinIcon className={styles.ctaCoin} aria-hidden="true" />
+                    </span>
+                  </span>
+                </span>
               </Button>
             </div>
           </div>
@@ -265,6 +292,7 @@ export function TransferMoney({
           from={fly.from}
           to={fly.to}
           reducedMotion={reducedMotion}
+          onFirstLand={handleFirstCoinLand}
           onDone={handleFlyDone}
         />
       )}
