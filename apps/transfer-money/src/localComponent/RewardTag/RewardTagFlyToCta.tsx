@@ -46,7 +46,7 @@ export function RewardTagFlyToCta({
     <>
       Lần đầu quét mã {merchantLabel}{" "}
       <strong className={styles.amount}>+{formatReward(reward)}</strong>
-      <CoinIcon className={styles.coin} aria-hidden="true" />. Chạm để nhận
+      <CoinIcon className={styles.coin} aria-hidden="true" />. Bấm để nhận
     </>
   );
   const s2Copy = "Hoàn tất thanh toán để nhận xu";
@@ -94,7 +94,7 @@ export function RewardTagFlyToCta({
       aria-live="polite"
       aria-label={
         state === "S0"
-          ? `Lần đầu quét mã ${merchantLabel}, cộng ${formatReward(reward)} xu. Chạm để nhận`
+          ? `Lần đầu quét mã ${merchantLabel}, cộng ${formatReward(reward)} xu. Bấm để nhận`
           : s2Copy
       }
     >
