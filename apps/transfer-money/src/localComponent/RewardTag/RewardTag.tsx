@@ -38,7 +38,6 @@ export function RewardTag({
       <RewardTagFlyToCta
         state={state}
         reward={reward}
-        merchantLabel={merchantLabel}
         onTap={onTap}
         onRevealComplete={onRevealComplete}
         reducedMotion={reducedMotion}

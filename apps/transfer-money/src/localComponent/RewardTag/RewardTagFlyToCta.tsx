@@ -7,8 +7,6 @@ import styles from "./RewardTagFlyToCta.module.css";
 export interface RewardTagFlyToCtaProps {
   state: RevealState;
   reward: number;
-  /** Merchant name shown in the S0 copy ("Lần đầu quét mã {merchant}"). */
-  merchantLabel: string;
   onTap: () => void;
   onRevealComplete: () => void;
   reducedMotion: boolean;
@@ -28,7 +26,6 @@ const LAUNCH_MS = 0;
 export function RewardTagFlyToCta({
   state,
   reward,
-  merchantLabel,
   onTap,
   onRevealComplete,
   reducedMotion,
@@ -44,7 +41,7 @@ export function RewardTagFlyToCta({
   const skinClass = state === "S0" && badgeSkin !== "soft" ? styles[badgeSkin] : "";
   const renderS0Copy = () => (
     <>
-      Lần đầu quét mã {merchantLabel}{" "}
+      Lần đầu quét mã{" "}
       <strong className={styles.amount}>+{formatReward(reward)}</strong>
       <CoinIcon className={styles.coin} aria-hidden="true" />. Bấm để nhận
     </>
@@ -68,7 +65,7 @@ export function RewardTagFlyToCta({
       S0: Math.ceil(s0.getBoundingClientRect().width + chrome),
       S2: Math.ceil(s2.getBoundingClientRect().width + chrome),
     });
-  }, [state, reward, merchantLabel, badgeSkin]);
+  }, [state, reward, badgeSkin]);
 
   useEffect(() => {
     if (state !== "S2") return;
@@ -94,7 +91,7 @@ export function RewardTagFlyToCta({
       aria-live="polite"
       aria-label={
         state === "S0"
-          ? `Lần đầu quét mã ${merchantLabel}, cộng ${formatReward(reward)} xu. Bấm để nhận`
+          ? `Lần đầu quét mã, cộng ${formatReward(reward)} xu. Bấm để nhận`
           : s2Copy
       }
     >
